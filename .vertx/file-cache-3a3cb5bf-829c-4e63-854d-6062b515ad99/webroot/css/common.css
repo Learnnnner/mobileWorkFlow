@@ -1,0 +1,20 @@
+.fontsize {
+    font-size: 4vw;
+}
+
+
+.header {
+    font-size: 8vw;
+    margin-top: 6vw;
+    text-align: center;
+    color: #1aad19;
+}
+
+/*按钮左右间隙*/
+.btn-pad {
+    padding: 0 15px;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
