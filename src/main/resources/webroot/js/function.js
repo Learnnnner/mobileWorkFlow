@@ -14,7 +14,7 @@ fun.service = {
         var loginname = $.cookie('loginname');
 
         if(loginname == null || loginname == '') {
-            window.href = MW.server + '/index'
+            window.href = MW.server + '/index';
         }else {}
 
         $('#user').html(loginname);
@@ -23,6 +23,20 @@ fun.service = {
 
 fun.eventHandler = {
     handleEvents: function () {
-        
+        this.handleEdit();
+        this.handletemplateSelect();
+        this.handleManage();
+    }, handleEdit: function () {
+        $('#edit').click(function () {
+            window.href = MW.server + '/edit';
+        })
+    }, handleManage: function () {
+        $('#manage').click(function () {
+            window.href = MW.server + '/staffManage';
+        })
+    }, handletemplateSelect: function () {
+        $('#fillForm').click(function () {
+            window.href = MW.server + '/templateSelect';
+        })
     }
 }
