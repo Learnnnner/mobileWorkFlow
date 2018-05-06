@@ -11,7 +11,13 @@ fun.service = {
 
     }, initControl: function () {
 
-        $('#user').html(username);
+        var loginname = $.cookie('loginname');
+
+        if(loginname == null || loginname == '') {
+            window.href = MW.server + '/index'
+        }else {}
+
+        $('#user').html(loginname);
     }
 }
 
@@ -20,4 +26,3 @@ fun.eventHandler = {
         
     }
 }
-
