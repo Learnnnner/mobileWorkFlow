@@ -8,6 +8,7 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
+import io.vertx.ext.web.Cookie;
 import io.vertx.ext.web.RoutingContext;
 import tool.ConvertTool;
 import tool.StringTool;
@@ -29,7 +30,7 @@ public class LoginService {
             DataAccess dataAccess = DataAccess.create(vertx);
             dataAccess.getJDBCClient().getConnection(connfuture);
 
-            String sql = "SELECT * FROM customer where loginname = ?";
+            String sql = "SELECT * FROM org_user where loginname = ?";
             JsonArray params = new JsonArray();
             params.add(username);
 
@@ -41,6 +42,7 @@ public class LoginService {
                         if(data.get(0).getString(1).equals(username) &&data.get(0).getString(3).equals(password)) {
                             jsonObject.put("status", 200);
                             jsonObject.put("message", "登陆成功");
+                            routingContext.addCookie(Cookie.cookie("loginname", data.get(0).getString(1)));
                             routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
                         } else {
                             jsonObject.put("status", 500);
