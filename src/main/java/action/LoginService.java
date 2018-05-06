@@ -10,6 +10,7 @@ import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
 import io.vertx.ext.web.Cookie;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.Session;
 import tool.ConvertTool;
 import tool.StringTool;
 
@@ -42,7 +43,10 @@ public class LoginService {
                         if(data.get(0).getString(1).equals(username) &&data.get(0).getString(3).equals(password)) {
                             jsonObject.put("status", 200);
                             jsonObject.put("message", "登陆成功");
-                            routingContext.addCookie(Cookie.cookie("loginname", data.get(0).getString(1)));
+                            Session session = routingContext.session();
+                            String loginname = data.get(0).getString(1);
+                            session.put("loginname", loginname);
+                            routingContext.addCookie(Cookie.cookie("loginname", loginname));
                             routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
                         } else {
                             jsonObject.put("status", 500);

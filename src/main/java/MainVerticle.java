@@ -11,10 +11,10 @@ public class MainVerticle extends AbstractVerticle {
 
         httpVerticleDeployment.setHandler((res) -> {
             if (res.succeeded()) {
-                System.out.println("http success");
+//                System.out.println("http success");
                 startFuture.complete();
             } else {
-                System.out.println("http fail");
+//                System.out.println("http fail");
                 startFuture.fail(res.cause());
             }
         });

@@ -25,6 +25,9 @@ public class HttpServerVerticle extends AbstractVerticle {
 
         router.route().handler(BodyHandler.create());
         router.route().handler(CookieHandler.create());
+        SessionStore sessionStore = LocalSessionStore.create(vertx);
+        SessionHandler sessionHandler = SessionHandler.create(sessionStore);
+        router.route().handler(sessionHandler);
         router.route().handler(CorsHandler.create("*").allowedMethod(HttpMethod.POST));
         router.route(HttpMethod.POST,"/login").handler(this::loginHandler);
         router.route("/function").handler(this::functionHandler);
