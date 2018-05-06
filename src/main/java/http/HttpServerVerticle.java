@@ -23,10 +23,6 @@ public class HttpServerVerticle extends AbstractVerticle {
         HttpServer server = vertx.createHttpServer();
         Router router = Router.router(vertx);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 004f8a6e967a28ee118b855e6bc3b7570898738f
         router.route().handler(BodyHandler.create());
         router.route().handler(CookieHandler.create());
         router.route().handler(CorsHandler.create("*").allowedMethod(HttpMethod.POST));
