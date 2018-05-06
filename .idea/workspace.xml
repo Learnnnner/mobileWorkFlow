@@ -6,32 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc1b0883-135c-4142-aeec-16d889f7569d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/webroot/js/function.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/webroot/js/jquery.cookie.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/pojo/Customer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/webroot/T.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/MainVerticle.class" afterPath="$PROJECT_DIR$/target/classes/MainVerticle.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/action/Login.class" afterPath="$PROJECT_DIR$/target/classes/action/Login.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/action/LoginService.class" afterPath="$PROJECT_DIR$/target/classes/action/LoginService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/http/HttpServerVerticle.class" afterPath="$PROJECT_DIR$/target/classes/http/HttpServerVerticle.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/action/LoginService.java" afterPath="$PROJECT_DIR$/src/main/java/action/LoginService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/http/HttpServerVerticle.java" afterPath="$PROJECT_DIR$/src/main/java/http/HttpServerVerticle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/webroot/function.html" afterPath="$PROJECT_DIR$/src/main/resources/webroot/function.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/webroot/js/login.js" afterPath="$PROJECT_DIR$/src/main/resources/webroot/js/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/css/common.css" afterPath="$PROJECT_DIR$/target/classes/webroot/css/common.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/css/wf.css" afterPath="$PROJECT_DIR$/target/classes/webroot/css/wf.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/iconfont/iconfont.js" afterPath="$PROJECT_DIR$/target/classes/webroot/iconfont/iconfont.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/js/login.js" afterPath="$PROJECT_DIR$/target/classes/webroot/js/login.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/js/template-select.js" afterPath="$PROJECT_DIR$/target/classes/webroot/js/template-select.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/js/typedata.js" afterPath="$PROJECT_DIR$/target/classes/webroot/js/typedata.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/js/wf.js" afterPath="$PROJECT_DIR$/target/classes/webroot/js/wf.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/login.html" afterPath="$PROJECT_DIR$/target/classes/webroot/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/template-select.html" afterPath="$PROJECT_DIR$/target/classes/webroot/template-select.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/webroot/wf.html" afterPath="$PROJECT_DIR$/target/classes/webroot/wf.html" />
-    </list>
+    <list default="true" id="dc1b0883-135c-4142-aeec-16d889f7569d" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="D:/finaldesign/target/" />
@@ -302,7 +277,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
@@ -693,16 +668,15 @@
       <workItem from="1524530149809" duration="36494000" />
       <workItem from="1524705856237" duration="31023000" />
       <workItem from="1525418079165" duration="6420000" />
-      <workItem from="1525571945116" duration="4595000" />
+      <workItem from="1525571945116" duration="4682000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="361326000" />
+    <option name="totallyTimeSpent" value="361413000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -727,7 +701,7 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2980333" sideWeight="0.5065789" order="5" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37397036" sideWeight="0.49092284" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37397036" sideWeight="0.49092284" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
