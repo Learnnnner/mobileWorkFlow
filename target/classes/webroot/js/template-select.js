@@ -4,7 +4,7 @@ $(function () {
 });
 
 function init() {
-    initBtn(btnType);
+    initBtn(flowType);
 }
 
 function eventHandler() {
@@ -15,7 +15,7 @@ function initBtn(list) {
     for(var obj in list) {
         for (var type in list[obj]) {
             var elementStr = '<a href="javascript:;" id="' + list[obj][type].type + '" class="weui-btn weui-btn_primary fontsize">' + list[obj][type].name + '</a>';
-            $(".weui-btn-area").append(elementStr);
+            $(".weui-btn-area").prepend(elementStr);
         }
     }
 }
@@ -36,6 +36,5 @@ function link() {
         //         alert('success');
         //     }
         // });
-
     })
 }

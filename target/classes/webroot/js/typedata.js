@@ -1,22 +1,21 @@
-var btnType = [
+var flowType = [
     {
-        'reimbursing': {
-            'type': 'reimbursing',
-            'name': '报销流程'
+        '报销流程': {
+            'id': '',
+            'user': {},
+            'tag': {}
         }
-    },
-
-    {
-        'stamp': {
-            'type': 'stamp',
-            'name': '印章流程'
+    }, {
+        '印章流程': {
+            'id': '',
+            'user': {},
+            'tag': {}
         }
-    },
-
-    {
-        'leave': {
-            'type': 'leave',
-            'name': '请假流程'
+    }, {
+        '请假流程': {
+            'id': '',
+            'user': {},
+            'tag': {}
         }
     }
 ]

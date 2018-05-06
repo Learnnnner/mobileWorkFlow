@@ -614,7 +614,7 @@ workFlow.eventHandler = {
                 str += '<br>';
             }
 
-            str = str + '流转至' + '&nbsp' +nextNode;
+            str = str + '流转至' + '&nbsp' + nextNode;
             if(!workFlow.service.addData()) return;
             $('#list').children('.listItems').append('<div class="weui-cells listItem">\n' +
                 '            <div class="weui-cell weui-cell_swiped">\n' +

@@ -9,6 +9,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import tool.EncryptTool;
 import action.Login;
@@ -19,11 +20,13 @@ public class HttpServerVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         HttpServer server = vertx.createHttpServer();
-
         Router router = Router.router(vertx);
+
         router.route().handler(BodyHandler.create());
+        router.route().handler(CookieHandler.create());
         router.route().handler(CorsHandler.create("*").allowedMethod(HttpMethod.POST));
         router.route(HttpMethod.POST,"/login").handler(this::loginHandler);
+        router.route("/function").handler(this::functionHandler);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -47,6 +50,12 @@ public class HttpServerVerticle extends AbstractVerticle {
 
     private void loginHandler(RoutingContext routingContext) {
         Login login = new Login(routingContext, vertx);
+    }
+
+    private void functionHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/function.html";
+        response.sendFile(filePath);
     }
 
     private void pageHandler(RoutingContext routingContext) {
