@@ -76,6 +76,9 @@ Org.eventHandler = {
 
         })
     }, handleAdd: function () {
-        
+        $(document).on('click', '#add', function () {
+            $("#addList").popup();
+        })
+
     }
 }
