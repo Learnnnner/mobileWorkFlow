@@ -1,0 +1,28 @@
+.search-bar {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.btn {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.icon {
+    width: 5vw; height: 5vw;
+    vertical-align: -0.15em;
+    fill: red;
+    overflow: hidden;
+    font-size: 1vw;
+}
+
+.container {
+    top: 44px;
+    overflow:auto;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+}

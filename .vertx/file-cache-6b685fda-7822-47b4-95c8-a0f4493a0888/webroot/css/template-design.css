@@ -1,0 +1,19 @@
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: red;
+    overflow: hidden;
+    font-size: 1vw;
+}
+
+.icon-font-size-3 {
+    font-size: 8vw;
+}
+
+.icon-active:active {
+    opacity: 0.5;
+}
+
+.icon-pos {
+    margin: 0 0 5px 1vw;
+}

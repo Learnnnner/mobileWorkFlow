@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="mobileWorkFlow:war">
+  <artifact type="war" name="mobileWorkflow:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="wiki-step-1-1.1.0.war">
-      <element id="artifact" artifact-name="mobileWorkFlow:war exploded" />
+    <root id="archive" name="mobileWorkflow-1.1.0.war">
+      <element id="artifact" artifact-name="mobileWorkflow:war exploded" />
     </root>
   </artifact>
 </component>

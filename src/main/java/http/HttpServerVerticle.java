@@ -1,19 +1,22 @@
 package http;
 
 import action.Login;
+import action.RedirectAuth;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.AuthProvider;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.CookieHandler;
-import io.vertx.ext.web.handler.CorsHandler;
-import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.handler.*;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import io.vertx.ext.web.sstore.SessionStore;
+import io.vertx.ext.auth.shiro.*;
+import org.DeleteOrg;
+import org.QueryOrg;
+
 
 public class HttpServerVerticle extends AbstractVerticle {
     public static final String CONFIG_HTTP_SERVER_PORT = "http.server.port";
@@ -25,12 +28,18 @@ public class HttpServerVerticle extends AbstractVerticle {
 
         router.route().handler(BodyHandler.create());
         router.route().handler(CookieHandler.create());
-        SessionStore sessionStore = LocalSessionStore.create(vertx);
-        SessionHandler sessionHandler = SessionHandler.create(sessionStore);
-        router.route().handler(sessionHandler);
+        router.route().handler(SessionHandler.create(LocalSessionStore.create(vertx)));
+
         router.route().handler(CorsHandler.create("*").allowedMethod(HttpMethod.POST));
         router.route(HttpMethod.POST,"/login").handler(this::loginHandler);
         router.route("/function").handler(this::functionHandler);
+        router.route("/edit").handler(this::editHandler);
+        router.route("/myform").handler(this::myformHandler);
+        router.route("/staffManage").handler(this::staffManageHandler);
+        router.route("/fillForm").handler(this::fillFormHandler);
+        router.route("/org").handler(this::orgHandler);
+        router.route("/fetchOrgs").handler(this::fetchOrgs);
+        router.route("/deleteOrg").handler(this::deleteOrg);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -46,6 +55,44 @@ public class HttpServerVerticle extends AbstractVerticle {
                 });
     }
 
+    private void deleteOrg(RoutingContext routingContext) {
+        DeleteOrg.delete(routingContext, vertx);
+    }
+
+    private void orgHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/org.html";
+        response.sendFile(filePath);
+    }
+
+    private void fetchOrgs(RoutingContext routingContext) {
+        QueryOrg.query(routingContext, vertx);
+    }
+
+    private void fillFormHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/fillForm.html";
+        response.sendFile(filePath);
+    }
+
+    private void staffManageHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/staffManage.html";
+        response.sendFile(filePath);
+    }
+
+    private void myformHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/myform.html";
+        response.sendFile(filePath);
+    }
+
+    private void editHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/edit.html";
+        response.sendFile(filePath);
+    }
+
     private void indexHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
         String filePath = "webroot/login.html";
@@ -58,16 +105,21 @@ public class HttpServerVerticle extends AbstractVerticle {
 
     private void functionHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        String filePath = "webroot/function.html";
-        response.sendFile(filePath);
+        boolean flag = RedirectAuth.redirectAuth(routingContext);
+        if(flag) {
+            String filePath = "webroot/function.html";
+            response.sendFile(filePath);
+        }else {
+            routingContext.reroute("/login.html");
+        }
     }
 
-    private void pageHandler(RoutingContext routingContext) {
-        HttpServerResponse response = routingContext.response();
-        String file = routingContext.request().getParam("page");
-        String filePath = "webroot/" + file + ".html";
-        response.sendFile(filePath);
-    }
+//    private void pageHandler(RoutingContext routingContext) {
+//        HttpServerResponse response = routingContext.response();
+//        String file = routingContext.request().getParam("page");
+//        String filePath = "webroot/" + file + ".html";
+//        response.sendFile(filePath);
+//    }
 
     private void fileHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();

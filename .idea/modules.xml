@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/mobileWorkFlow.iml" filepath="$PROJECT_DIR$/mobileWorkFlow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mobileWorkflow.iml" filepath="$PROJECT_DIR$/mobileWorkflow.iml" />
     </modules>
   </component>
 </project>
