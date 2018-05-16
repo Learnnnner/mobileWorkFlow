@@ -1,4 +1,4 @@
-package org;
+package org.user;
 
 import database.DataAccess;
 import io.vertx.core.Future;
@@ -12,7 +12,7 @@ import io.vertx.ext.web.RoutingContext;
 
 import java.util.List;
 
-public class QueryOrg {
+public class QueryUser {
     public static void query(RoutingContext routingContext, Vertx vertx) {
         Future<SQLConnection> connfuture = Future.future();
         Future<ResultSet> resultFuture = Future.future();
@@ -21,7 +21,7 @@ public class QueryOrg {
         DataAccess dataAccess = DataAccess.create(vertx);
         dataAccess.getJDBCClient().getConnection(connfuture);
 
-        String sql = "SELECT * FROM org_org";
+        String sql = "SELECT * FROM v_org_user";
 
         resultFuture.setHandler(asyncResult -> {
             if(asyncResult.succeeded()) {

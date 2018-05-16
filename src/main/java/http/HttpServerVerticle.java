@@ -7,15 +7,17 @@ import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.auth.AuthProvider;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.*;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CookieHandler;
+import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import io.vertx.ext.auth.shiro.*;
-import org.DeleteOrg;
-import org.QueryOrg;
+import org.org.AddOrg;
+import org.org.DeleteOrg;
+import org.org.EditOrg;
+import org.org.QueryOrg;
 
 
 public class HttpServerVerticle extends AbstractVerticle {
@@ -40,6 +42,8 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/org").handler(this::orgHandler);
         router.route("/fetchOrgs").handler(this::fetchOrgs);
         router.route("/deleteOrg").handler(this::deleteOrg);
+        router.route("/addOrg").handler(this::addOrg);
+        router.route("/editOrg").handler(this::editOrg);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -53,6 +57,14 @@ public class HttpServerVerticle extends AbstractVerticle {
                         startFuture.fail(ar.cause());
                     }
                 });
+    }
+
+    private void editOrg(RoutingContext routingContext) {
+        EditOrg.update(routingContext, vertx);
+    }
+
+    private void addOrg(RoutingContext routingContext) {
+        AddOrg.add(routingContext, vertx);
     }
 
     private void deleteOrg(RoutingContext routingContext) {
@@ -70,9 +82,7 @@ public class HttpServerVerticle extends AbstractVerticle {
     }
 
     private void fillFormHandler(RoutingContext routingContext) {
-        HttpServerResponse response = routingContext.response();
-        String filePath = "webroot/fillForm.html";
-        response.sendFile(filePath);
+        QueryOrg.query(routingContext, vertx);
     }
 
     private void staffManageHandler(RoutingContext routingContext) {
@@ -113,13 +123,6 @@ public class HttpServerVerticle extends AbstractVerticle {
             routingContext.reroute("/login.html");
         }
     }
-
-//    private void pageHandler(RoutingContext routingContext) {
-//        HttpServerResponse response = routingContext.response();
-//        String file = routingContext.request().getParam("page");
-//        String filePath = "webroot/" + file + ".html";
-//        response.sendFile(filePath);
-//    }
 
     private void fileHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();

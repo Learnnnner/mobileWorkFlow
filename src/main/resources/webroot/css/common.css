@@ -132,3 +132,6 @@
     overflow: hidden;
 }
 
+.weui-cell__ft input[type="radio"]{
+    display: none;
+}

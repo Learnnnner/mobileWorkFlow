@@ -4,6 +4,7 @@ $(function () {
 });
 
 var Org= {};
+var optObj;
 
 Org.service = {
     init: function () {
@@ -45,6 +46,9 @@ Org.eventHandler = {
         this.handleDelete();
         this.handleEdit();
         this.handleAdd();
+        this.handleSave();
+        this.handleCancel();
+        this.handleEditCommit();
     }, handleDelete: function () {
         $(document).on('click', '.delete', function () {
             var self = $(this);
@@ -73,12 +77,81 @@ Org.eventHandler = {
         })
     }, handleEdit: function () {
         $(document).on('click', '.edit', function () {
-
+            var self = $(this);
+            var node = self.parents('.weui-form-preview');
+            optObj = node;
+            var obj = node.attr('id');
+            var name = node.find('.weui-media-box__title').html();
+            var description = node.find('.weui-media-box__desc').html();
+            $('#edit-name').val(name);
+            $('#edit-description').val(description);
+            $("#editPop").popup();
         })
     }, handleAdd: function () {
         $(document).on('click', '#add', function () {
             $("#addList").popup();
         })
+    }, handleSave: function () {
+        $('#save').click(function () {
+            var id = $('#id').val();
+            var name = $('#name').val();
+            var desciption = $('#desciption').val();
+            if(id == '' || id == undefined || id == null || name == '' || name == undefined || name == null) {
+                $.toptip('操作失败,请输入部门编号和名称', 'error');
+            }else {
+                var data = {
+                    'id': id,
+                    'name' : name,
+                    'description': desciption
+                }
 
+                $.ajax({
+                    type: "POST",
+                    url: MW.server + "/addOrg",
+                    data: JSON.stringify(data),
+                    dataType: "json",
+                    success: function (data) {
+                        if (200 == data.status) {
+                            var url = MW.server + '/function';
+                            location.href = url;
+                        } else $.toptip("登录失败，请检查用户名或密码是否正确!", 'error')
+                    }, error:
+                        function (data) {
+                            $.toptip("操作失败!请检查网络情况或与系统管理员联系！", 'error')
+                        }
+                })
+            }
+        })
+    }, handleCancel: function () {
+
+    }, handleEditCommit: function () {
+        $(document).on('click', '#edit-save', function () {
+            var id = optObj.attr('id');
+            var name = $('#edit-name').val();
+            var description = $('#edit-description').val();
+            var data = {
+                'id': id,
+                'name': name,
+                'description': description
+            };
+
+            $.ajax({
+                type: "POST",
+                url: MW.server + "/editOrg",
+                data: JSON.stringify(data),
+                dataType: "json",
+                success: function (data) {
+                    if (200 == data.status) {
+                        optObj.find('.weui-media-box__title').html(name);
+                        optObj.find('.weui-media-box__desc').html(description);
+                        $.toptip("修改成功!", "success");
+                        $.closePopup();
+                    } else $.toptip("修改异常!", "error");
+                }, error: function (data) {
+                    // console.log(data);
+                    $.toptip("修改异常!", "error")
+                }
+            })
+        })
     }
 }

@@ -85,7 +85,6 @@
                     <!--<button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" href="javascript:">编辑</button>-->
                 <!--</div>-->
             <!--</div>-->
-
         </div>
     </div>
 </div>
@@ -93,7 +92,7 @@
 <div class="btn">
     <div class="weui-flex">
         <div class="weui-flex__item" style="margin: 0 5vw">
-            <a id="back" class="weui-btn weui-btn_plain-default">
+            <a id="back" href="javascript:history.go(-1)" class="weui-btn weui-btn_plain-default">
                 返回
             </a>
         </div>
@@ -107,19 +106,28 @@
     </div>
 </div>
 
-<div id="addList" class="weui-popup__container">
+<div id="addList" class="weui-popup__container" style="overflow: scroll;">
     <div class="weui-popup__overlay"></div>
     <div class="weui-popup__modal">
-        <div class="header">
+        <div class="header" style="margin-bottom: 6vw">
             添加部门
         </div>
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell">
                 <div class="weui-cell__hd">
+                    <label class="weui-label">编号</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id='id' class="weui-input" type="number" placeholder="请输入部门编号">
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
                     <label class="weui-label">名称</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" placeholder="请输入部门名称">
+                    <input id='name' class="weui-input" placeholder="请输入部门名称">
                 </div>
             </div>
 
@@ -128,39 +136,276 @@
                     <label class="weui-label">部门描述</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <textarea class="weui-textarea" style="font-family: 微软雅黑" placeholder="请输入文本" rows="3"></textarea>
+                    <textarea id="description" class="weui-textarea" style="font-family: 微软雅黑" placeholder="请输入文本" rows="3"></textarea>
                 </div>
             </div>
 
             <div class="weui-cell weui-cell_switch">
                 <div class="weui-cell__bd">权限设置</div>
                 <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch"  type="checkbox">
-                </div>
-                <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch" type="checkbox">
-                </div>
-                <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch" type="checkbox">
-                </div>
-                <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch" type="checkbox">
-                </div>
-                <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch" type="checkbox">
-                </div>
-                <div class="weui-cell__ft" style="display: block">
-                    <input class="weui-switch" type="checkbox">
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-tijiao"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox" checked="checked">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true" >
+                                            <use xlink:href="#icon-biaodan"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox" checked="checked">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-bianji"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-guanlikehu"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-zuzhi"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-permissions-user"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="weui-flex">
-            <div class="weui-flex__item btn">
-                <a href="javascript:;" class="weui-btn weui-btn_default">取消</a>
+        <div class="btn">
+            <div class="weui-flex">
+                <div class="weui-flex__item close-popup" style="margin: 0 5vw">
+                    <a id="cancel" class="weui-btn weui-btn_plain-default">取消</a>
+                </div>
+                <div class="weui-flex__item" style="margin: 0 5vw">
+                    <a id="save" class="weui-btn weui-btn_primary">保存</a>
+                </div>
             </div>
-            <div class="weui-flex__item btn">
-                <a href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+        </div>
+    </div>
+</div>
+
+<div id="editPop" class="weui-popup__container" style="overflow: scroll;">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal">
+        <div class="header" style="margin-bottom: 6vw">
+            编辑部门
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">名称</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id='edit-name' class="weui-input" placeholder="请输入部门名称">
+                </div>
+            </div>
+
+            <div class="weui-cell">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">部门描述</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <textarea id="edit-description" class="weui-textarea" style="font-family: 微软雅黑" placeholder="请输入文本" rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="weui-cell weui-cell_switch">
+                <div class="weui-cell__bd">权限设置</div>
+                <div class="weui-cell__ft" style="display: block">
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-tijiao"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox" checked="checked">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true" >
+                                            <use xlink:href="#icon-biaodan"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox" checked="checked">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-bianji"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-guanlikehu"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-zuzhi"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="authority-option" style="margin-top: 0">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="weui-grid__icon">
+                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">
+                                            <use xlink:href="#icon-permissions-user"></use>
+                                        </svg>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input class="weui-switch" type="checkbox">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn">
+            <div class="weui-flex">
+                <div class="weui-flex__item close-popup" style="margin: 0 5vw">
+                    <a id="edit-cancel" class="weui-btn weui-btn_plain-default">取消</a>
+                </div>
+                <div class="weui-flex__item" style="margin: 0 5vw">
+                    <a id="edit-save" class="weui-btn weui-btn_primary">确定</a>
+                </div>
             </div>
         </div>
     </div>

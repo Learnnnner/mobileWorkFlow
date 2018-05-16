@@ -19,6 +19,14 @@
     font-size: 1vw;
 }
 
+.icon-30px {
+    width: 30px; height: 30px;
+    vertical-align: -0.15em;
+    fill: red;
+    overflow: hidden;
+    font-size: 1vw;
+}
+
 .container {
     top: 44px;
     overflow:auto;
@@ -28,5 +36,17 @@
 }
 
 #addList {
+    z-index: 199;
+}
+
+.authority-option {
+    margin: 6.5px 0;
+}
+
+td {
+    padding: 0 10px;
+}
+
+#editPop {
     z-index: 199;
 }
