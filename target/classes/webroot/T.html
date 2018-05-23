@@ -32,11 +32,11 @@
        {"id" : "1", "text" : "财务部", "spread" : true,"checked" : false, "childs" : [{"id" : "11", "text" : "张三"},
            {"id" : "12", "text" : "李四"}, {"id" : "13", "text" : "李四"}]},
        {"id" : "2","text" : "研发部", "spread" : true,"checked" : false, "childs":[{"id":"21","text" : "王五"},
-           {"id" : "22", "text" : "赵六"}, {"id" : "22", "text" : "赵六"}]},
+           {"id" : "22", "text" : "赵六"}, ]},
     ];
 
     $(function(){
-        $("#groupRule").groupRule({title : "测试", titleIcon : "&#x3104;", data : data});
+        $("#groupRule").groupRule({title : "测试", titleIcon : "&#x3104;", data : data, effect: 200});
     });
 </script>
 </body>

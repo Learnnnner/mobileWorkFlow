@@ -28,6 +28,7 @@ var type;
 var tableDesign = {};
 var optionCount = 0;
 var editCount = 0;
+var wfid;
 
 tableDesign.service = {
     init : function () {
@@ -37,6 +38,38 @@ tableDesign.service = {
         $(".city-picker").cityPicker({
             title: ""
         });
+
+        wfid = this.getQueryVariable('id');
+
+        $.ajax({
+            type: "POST",
+            url: MW.server + "/fetchTemplate",
+            data: JSON.stringify({id: wfid}),
+            dataType: "json",
+            success: function (data) {
+                if (200 == data.status) {
+                    console.log(data.template);
+
+                    // if(data.template.length > 0) {
+                    //     for(var i = 0; i < data.templateList.length; ++ i) {
+                    //         $('#templates').append('        ' +
+                    //             '<a id="'+ data.templateList[i][0] +'" class="weui-media-box weui-media-box_appmsg template">\n' +
+                    //             '            <div class="weui-media-box__bd">\n' +
+                    //             '                <h4 class="weui-media-box__title">' + data.templateList[i][1] + '</h4>\n' +
+                    //             '            </div>\n' +
+                    //             '        </a>')
+                    //     }
+                    // }
+
+                    // else {
+                    //     $.toptip("数据异常!", "error");
+                    // }
+                } else $.toptip("服务器访问异常!", "error");
+            }, error: function (data) {
+                $.toptip("服务器访问异常!", "error");
+            }
+        });
+
     }, showList: function() {
         if(edit == true) {
             $('#edit-commit').parents('.weui-msg__opr-area').show();
@@ -227,6 +260,16 @@ tableDesign.service = {
             }
         }
 
+    }, getQueryVariable: function (variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0; i<vars.length; i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return(false);
     }
 };
 

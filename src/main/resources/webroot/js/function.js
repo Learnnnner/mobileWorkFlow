@@ -34,7 +34,7 @@ fun.eventHandler = {
         })
     }, handleEdit: function () {
         $('#edit').click(function () {
-            location.href = MW.server + '/edit';
+            location.href = MW.server + '/table';
         })
     }, handleManage: function () {
         $('#manage').click(function () {

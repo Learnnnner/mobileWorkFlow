@@ -18,6 +18,13 @@ import org.org.AddOrg;
 import org.org.DeleteOrg;
 import org.org.EditOrg;
 import org.org.QueryOrg;
+import org.user.AddUser;
+import org.user.DeleteUser;
+import org.user.QueryUser;
+import workflow.template.QueryTemplate;
+import workflow.workflow.AddWorkflow;
+import workflow.workflow.QueryTable;
+import workflow.workflow.QueryWorkflow;
 
 
 public class HttpServerVerticle extends AbstractVerticle {
@@ -38,11 +45,24 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/edit").handler(this::editHandler);
         router.route("/myform").handler(this::myformHandler);
         router.route("/staffManage").handler(this::staffManageHandler);
+
+        router.route("/fetchOrgUser").handler(this::fetchOrgUser);
+        router.route("/addOrgUser").handler(this::addOrgUser);
+        router.route("/deleteOrgUser").handler(this::deleteOrgUser);
         router.route("/fillForm").handler(this::fillFormHandler);
+
         router.route("/org").handler(this::orgHandler);
         router.route("/fetchOrgs").handler(this::fetchOrgs);
         router.route("/deleteOrg").handler(this::deleteOrg);
         router.route("/addOrg").handler(this::addOrg);
+        router.route("/editOrg").handler(this::editOrg);
+
+        router.route("/fetchTemplate").handler(this::fetchTemplate);
+        router.route("/table").handler(this::table);
+        router.route("/fetchTable").handler(this::fetchTable);
+        router.route("/fetchwf").handler(this::fetchwf);
+        router.route("/savewf").handler(this::savewf);
+
         router.route("/editOrg").handler(this::editOrg);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
@@ -57,6 +77,40 @@ public class HttpServerVerticle extends AbstractVerticle {
                         startFuture.fail(ar.cause());
                     }
                 });
+    }
+
+    private void table(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/table.html";
+        response.sendFile(filePath);
+    }
+
+    private void fetchTable(RoutingContext routingContext) {
+        QueryTable.query(routingContext, vertx);
+    }
+
+    private void fetchTemplate(RoutingContext routingContext) {
+        QueryTemplate.query(routingContext, vertx);
+    }
+
+    private void fetchwf(RoutingContext routingContext) {
+        QueryWorkflow.query(routingContext, vertx);
+    }
+
+    private void savewf(RoutingContext routingContext) {
+        AddWorkflow.add(routingContext, vertx);
+    }
+
+    private void deleteOrgUser(RoutingContext routingContext) {
+        DeleteUser.delete(routingContext, vertx);
+    }
+
+    private void addOrgUser(RoutingContext routingContext) {
+        AddUser.add(routingContext, vertx);
+    }
+
+    private void fetchOrgUser(RoutingContext routingContext) {
+        QueryUser.query(routingContext, vertx);
     }
 
     private void editOrg(RoutingContext routingContext) {
@@ -82,7 +136,9 @@ public class HttpServerVerticle extends AbstractVerticle {
     }
 
     private void fillFormHandler(RoutingContext routingContext) {
-        QueryOrg.query(routingContext, vertx);
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/fillForm.html";
+        response.sendFile(filePath);
     }
 
     private void staffManageHandler(RoutingContext routingContext) {

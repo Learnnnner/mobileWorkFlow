@@ -31,7 +31,6 @@ login.service = {
                 } else $.alert("登录失败，请检查用户名或密码是否正确!")
             }, error:
                 function (data) {
-                    console.log(data.status);
                     $.alert("操作失败!请检查网络情况或与系统管理员联系！")
                 }
         }) : void $.alert("请输入密码!") : void $.alert("请输入用户名!")

@@ -22,9 +22,8 @@ var node = {
             'rule'    : ['小于'],
             'value'   : [1000],
             'nextNode': '经理审批',
-            // 'visible' : true
-        },
-        {
+            // 'dealer' :  [10001]
+        }, {
             'keywords': ['金额'],
             'rule'    : ['大于'],
             'value'   : [1000],
@@ -56,6 +55,7 @@ var node = {
     '获得报销款': []
 }
 
+// var node = {};
 
 var connectorPaintStyle = {
     strokeWidth: 3,
@@ -278,7 +278,28 @@ workFlow.service = {
         $.toptip('工作流已发布', 'success');
     }, //保存操作
     wfSave: function () {
-        $.toptip('工作流已保存', 'success');
+
+        var data = {
+
+        };
+
+        $.ajax({
+            type: "POST",
+            url: MW.server + "/savewf",
+            data: JSON.stringify(userdata),
+            dataType: "json",
+            success: function (data) {
+                if (200 == data.status) {
+                    $.toptip('工作流已保存', 'success');
+                } else {
+
+                }
+            }, error: function (data) {
+                $.toptip("操作失败!请检查网络情况或与系统管理员联系！", 'error')
+            }
+        });
+
+
     }, //清空操作
     wfEmpty: function () {
         $.confirm({
@@ -422,7 +443,6 @@ workFlow.service = {
                 $.toptip('添加条件有重复','error');
                 return false;
             }
-
         }
 
         optList.push({
@@ -430,11 +450,9 @@ workFlow.service = {
             'rule' : rulArr,
             'value' : valArr,
             'nextNode' : next,
-        })
+        });
         return true;
-    },
-
-    ArrayEquals: function (a, b) {
+    }, ArrayEquals: function (a, b) {
         if(a.length != b.length) return false;
         for ( var i = 0; i < a.length; i++) {
             if (a[i] != b[i] ) return false;
@@ -446,9 +464,7 @@ workFlow.service = {
             target: destination,
         });
         connArr.push(conn);
-    },
-
-    dispatchModule: function (sourceId, targetId) {
+    }, dispatchModule: function (sourceId, targetId) {
         for(var i = 0; i < connArr.length; i++) {
             if(connArr[i].sourceId == sourceId && connArr[i].targetId == targetId) {
                 jspInstance.deleteConnection(connArr[i]);

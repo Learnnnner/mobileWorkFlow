@@ -29,7 +29,7 @@ public class QueryUser {
                 List<JsonArray> data = rs.getResults();
                 JsonArray jsonArray = new JsonArray(data);
                 jsonObject.put("status", 200);
-                jsonObject.put("orgList", jsonArray);
+                jsonObject.put("data", jsonArray);
                 routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
             } else {
                 jsonObject.put("status", 500);

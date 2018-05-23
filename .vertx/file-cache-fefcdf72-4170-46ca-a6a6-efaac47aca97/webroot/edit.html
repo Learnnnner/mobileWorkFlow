@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <title>表单设计</title>
+    <link rel="stylesheet" type="text/css" href="css/public.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/weui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/template-design.css">
+    <link rel="stylesheet" href="css/wf.css">
+
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="css/groupRule.css" />
+
+    <script src="js/jquery.js"></script>
+    <script src="js/jsplumb.min.js"></script>
+    <script src="js/jquery-weui.min.js"></script>
+    <script src="iconfont/iconfont.js"></script>
+    <script type="text/javascript" src="js/city-picker.js" charset="utf-8"></script>
+    <script src="js/table-design.js"></script>
+    <script src="js/wf.js"></script>
+    <script src="js/groupRule.js"></script>
+</head>
+<body ontouchstart="">
+<div class="weui-tab">
+    <div class="weui-navbar" style="position: fixed">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            流程
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            填单人
+        </a>
+        <a class="weui-navbar__item" href="#tab3">
+            表单
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div style="clear: both">
+                <div id="bgDiv"></div>
+                <div id="bgDiv2"></div>
+
+                <!--导航栏 开始-->
+                <div class="weui-flex nav-color">
+                    <div id="action" class="weui-flex__item module-padding module ">
+                        业务
+                    </div>
+                    <div id="operation" class="weui-flex__item module-padding module-padding-r icon-position">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-caozuo"></use>
+                        </svg>
+                    </div>
+                </div>
+                <!--导航栏 结束-->
+
+                <!--工作区 开始-->
+                <div class="weui-flex">
+                    <div id="workspace" class="weui-flex__item workspace workspace-background"></div>
+                </div>
+                <!--工作区 结束-->
+
+                <!--人员配置 开始-->
+                <div id="staff-list" class="weui-popup__container">
+                    <div class="weui-popup__overlay"></div>
+                    <div class="weui-popup__modal">
+
+                        <!--内容-->
+                        <div class="weui-panel weui-panel_access">
+                            <div class="weui-panel__hd">选择人员</div>
+                            <div class="weui-panel__bd">
+                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
+                                    <div class="weui-media-box__hd">
+                                        <img class="weui-media-box__thumb" src="img/boy.jpg">
+                                    </div>
+                                    <div class="weui-media-box__bd">
+                                        <h4 class="weui-media-box__title">boy</h4>
+                                    </div>
+                                    <div class="weui-media-box__bd" style="text-align: right">
+                                        <i class="weui-icon-circle"></i>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
+                                    <div class="weui-media-box__hd">
+                                        <img class="weui-media-box__thumb" src="img/girl.jpg">
+                                    </div>
+                                    <div class="weui-media-box__bd">
+                                        <h4 class="weui-media-box__title">girl</h4>
+                                    </div>
+                                    <div class="weui-media-box__bd" style="text-align: right">
+                                        <i class="weui-icon-circle"></i>
+                                    </div>
+                                </a>
+                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
+                                    <div class="weui-media-box__hd">
+                                        <img class="weui-media-box__thumb" src="img/cat.jpg">
+                                    </div>
+                                    <div class="weui-media-box__bd">
+                                        <h4 class="weui-media-box__title">girl</h4>
+                                    </div>
+                                    <div class="weui-media-box__bd" style="text-align: right">
+                                        <i class="weui-icon-success"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!--按钮-->
+                        <div class="weui-msg__opr-area">
+                            <p class="weui-btn-area">
+                                <a id="staff-confirm" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                                <a id="staff-cancel" href="javascript:;" class="weui-btn weui-btn_default">取消</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!--人员配置  结束-->
+
+                <!--跳转条件配置 开始-->
+                <div id="list" class="rightNav overflow">
+                    <div class="weui-panel weui-panel_access listItems">
+                        <div class="weui-cells__title">条件列表</div>
+                    </div>
+
+                    <div class="weui-msg__opr-area">
+                        <p class="weui-btn-area">
+                            <a id='newItem' href="javascript:;" class="weui-btn weui-btn_primary">添加跳转条件</a>
+                            <a id="list-commit" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                        </p>
+                    </div>
+                </div>
+                <!--跳转条件配置 结束-->
+
+                <!--跳转条件 开始-->
+                <div id="condition" class="rightNav overflow">
+                    <div class="weui-cells__title">条件详细设置</div>
+                    <div class="weui-cells weui-cells_form">
+                        <div class="conditionItems">
+                            <div class="conditionItem">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">关键字</label></div>
+                                    <div class="weui-cell__bd">
+                                        <input id="keywords" class="weui-input keywords" type="text" placeholder="请输入关键字">
+                                    </div>
+                                </div>
+
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">规则</label></div>
+                                    <div class="weui-cell__bd">
+                                        <input id="rule" class="weui-input rule" type="text" placeholder="请输入规则">
+                                    </div>
+                                </div>
+
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">值</label></div>
+                                    <div class="weui-cell__bd">
+                                        <input class="weui-input value" type="text" placeholder="请输入值">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-cells__title">跳转至</div>
+                        <div class="weui-cell">
+                            <div class="weui-cell__bd">
+                                <input class="weui-input nextNode" type="text" placeholder="请输入下一个节点的名称">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weui-msg__opr-area">
+                        <p class="weui-btn-area">
+                            <a id='newCondition' href="javascript:;" class="weui-btn weui-btn_primary">添加条件</a>
+                            <a id='condition-commit' href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                            <a id='condition-cancel' href="javascript:;" class="weui-btn weui-btn_default">取消</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab2" class="weui-tab__bd-item">
+            <!--<div class="header" style="border-bottom: 1px solid #dedede; padding-bottom: 3vw">-->
+                <!--人员管理-->
+            <!--</div>-->
+            <ul id="groupRule" style="margin-bottom: 60px"></ul>
+            <script type="text/javascript">
+                //应该是通过ajax请求过来的
+
+                var data = [
+                    {"id" : "1", "text" : "财务部", "spread" : true,"checked" : false, "childs" : [{"id" : "11", "text" : "张三"},
+                        {"id" : "12", "text" : "李四"}, {"id" : "13", "text" : "李四"}]},
+                    {"id" : "2","text" : "研发部", "spread" : true,"checked" : false, "childs":[{"id":"21","text" : "王五"},
+                        {"id" : "22", "text" : "赵六"}, {"id" : "22", "text" : "赵六"}]},
+                    {"id" : "3", "text" : "财务部", "spread" : true,"checked" : false, "childs" : [{"id" : "11", "text" : "张三"},
+                        {"id" : "12", "text" : "李四"}, {"id" : "13", "text" : "李四"}]},
+                    {"id" : "4","text" : "研发部", "spread" : true,"checked" : false, "childs":[{"id":"21","text" : "王五"},
+                        {"id" : "22", "text" : "赵六"}, {"id" : "22", "text" : "赵六"}]},
+                ];
+
+                $(function(){
+                    $("#groupRule").groupRule({title : "测试", titleIcon : "&#x3104;", data : data});
+                });
+            </script>
+
+            <div class="btn" style="width: 100%; position: fixed; bottom: 0px" >
+                <div class="weui-flex">
+                    <div class="weui-flex__item" style="margin: 0 5vw">
+                        <a id="back" href="javascript:history.go(-1)" class="weui-btn weui-btn_primary">
+                            返回
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab3" class="weui-tab__bd-item">
+            <div id="bgDiv3"></div>
+            <!--<div id="bgDiv2"></div>-->
+
+            <div id="container">
+                <div class="weui-cells weui-cells_form table-topic-top" style="background-color: #F8F8F8">
+                    <div id="title" class="weui-cell table-border-bottom" style="background-color: #FFFFFF">
+                        <div class="weui-cell__hd"><label class="weui-label">标题</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" placeholder="请输入表单标题">
+                        </div>
+                    </div>
+
+                    <div id="elem_0" class="weui-form-preview table-margin-top" data-type="single">
+                        <div class="weui-form-preview__bd" style="padding-left: 0;padding-right: 0">
+                            <div class="weui-form-preview__item table-border-bottom " >
+                                <label class="weui-form-preview__label table-margin-left title-bottom">单行文字</label>
+                            </div>
+                            <div class="weui-form-preview__item">
+                                <span class="weui-form-preview__label" style="margin-top: 10px">
+                                     <input class="weui-input singleline-width table-margin-left" type="text" placeholder="请输入表单标题">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_1" class="weui-form-preview table-margin-top" data-type="checkbox">
+                        <div class="weui-form-preview__bd" style="padding-left: 0; padding-bottom: 0; padding-right: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">复选</label>
+                            </div>
+
+                            <div class="weui-form-preview__item">
+                                <div class="weui-cells weui-cells_checkbox no-margin-top">
+                                    <label class="weui-cell weui-check__label" style="left: 0" for="s11">
+                                        <div class="weui-cell__hd ">
+                                            <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked"/>
+                                            <i class="weui-icon-checked"></i>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">多选项一</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" style="left: 0" for="s12">
+                                        <div class="weui-cell__hd">
+                                            <input type="checkbox" name="checkbox1" class="weui-check" id="s12"/>
+                                            <i class="weui-icon-checked"></i>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">多选项二</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" for="s13">
+                                        <div class="weui-cell__hd">
+                                            <input type="checkbox" name="checkbox1" class="weui-check" id="s13"/>
+                                            <i class="weui-icon-checked"></i>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">多选项三</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" style="left: 0" for="s14">
+                                        <div class="weui-cell__hd">
+                                            <input type="checkbox" name="checkbox1" class="weui-check" id="s14"/>
+                                            <i class="weui-icon-checked"></i>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">多选项四</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_2" class="weui-form-preview table-margin-top" data-type="radio">
+                        <div class="weui-form-preview__bd" style="padding-left: 0; padding-bottom: 0; padding-right: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">单选</label>
+                            </div>
+
+                            <div class="weui-form-preview__item">
+                                <div class="weui-cells weui-cells_radio no-margin-top">
+                                    <label class="weui-cell weui-check__label" for="x11">
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">单选项一</p>
+                                        </div>
+                                        <div class="weui-cell__ft">
+                                            <input type="radio" class="weui-check" name="radio1" id="x11"/>
+                                            <span class="weui-icon-checked"></span>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" for="x12">
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">单选项二</p>
+                                        </div>
+                                        <div class="weui-cell__ft">
+                                            <input type="radio" name="radio1" class="weui-check" id="x12" checked="checked"/>
+                                            <span class="weui-icon-checked"></span>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" for="x13">
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">单选项三</p>
+                                        </div>
+                                        <div class="weui-cell__ft">
+                                            <input type="radio" name="radio1" class="weui-check" id="x13" checked="checked"/>
+                                            <span class="weui-icon-checked"></span>
+                                        </div>
+                                    </label>
+
+                                    <label class="weui-cell weui-check__label" for="x14">
+                                        <div class="weui-cell__bd">
+                                            <p class="float-left">单选项四</p>
+                                        </div>
+                                        <div class="weui-cell__ft">
+                                            <input type="radio" name="radio1" class="weui-check" id="x14" checked="checked"/>
+                                            <span class="weui-icon-checked"></span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_3" class="weui-form-preview table-margin-top" data-type="muti">
+                        <div class="weui-form-preview__bd" style="padding-left: 0; padding-right: 0; padding-bottom: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">多行文本</label>
+                            </div>
+
+                            <div class="weui-cells weui-cells_form no-margin-top">
+                                <div class="weui-form-preview__item">
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__bd">
+                                            <textarea class="weui-textarea textarea-font-family" placeholder="请输入文本" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_4" class="weui-form-preview table-margin-top" data-type="date">
+                        <div class="weui-form-preview__bd" style="padding-left: 0;padding-bottom: 0; padding-right: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">日期</label>
+                            </div>
+
+                            <div class="weui-form-preview__item">
+                                <div class="weui-cells weui-cells_form no-margin-top">
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__bd" >
+                                            <input id="date" class="weui-input float-left" placeholder="请输入日期" type="text" data-toggle='date' readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_5" class="weui-form-preview table-margin-top" data-type="place">
+                        <div class="weui-form-preview__bd" style="padding-left: 0;padding-bottom: 0; padding-right: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">地址</label>
+                            </div>
+
+                            <div class="weui-form-preview__item">
+                                <div class="weui-cells weui-cells_form no-margin-top">
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__bd" >
+                                            <input type="text" class="weui-input float-left" id='city-picker' />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="elem_6" class="weui-form-preview table-margin-top" data-type="picture">
+                        <div class="weui-form-preview__bd" style="padding-left: 0;padding-bottom: 0; padding-right: 0">
+                            <div class="weui-form-preview__item">
+                                <label class="weui-form-preview__label table-margin-left title-bottom">图片</label>
+                            </div>
+
+                            <div class="weui-form-preview__item">
+                                <div class="weui-cells weui-cells_form no-margin-top">
+                                    <div class="weui-cell" style="padding-right: 2vw; padding-left: 2vw">
+                                        <div class="weui-cell__bd">
+                                            <div class="weui-uploader">
+                                                <div class="weui-uploader__bd">
+                                                    <ul class="weui-uploader__files" id="uploaderFiles">
+                                                        <li class="weui-uploader__file" style="background-image:url(img/boy.jpg)"></li>
+                                                        <li class="weui-uploader__file" style="background-image:url(img/boy.jpg)"></li>
+                                                        <li class="weui-uploader__file" style="background-image:url(img/boy.jpg)"></li>
+                                                    </ul>
+                                                    <div class="weui-uploader__input-box">
+                                                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weui-form-preview__ft">
+                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>
+                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">
+                                编辑
+                            </button>
+                        </div>
+                    </div>
+                    <div id="extra" class="weui-form-preview table-margin-top" data-type="picture"></div>
+                </div>
+            </div>
+
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a id="addmodule" href="javascript:;" class="weui-btn weui-btn_plain-default">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-jiahaocu"></use>
+                        </svg> &nbsp;添加
+                    </a>
+                </p>
+            </div>
+
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a id="table-save" href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+                </p>
+            </div>
+
+            <!--右侧弹窗 开始-->
+            <div id="elemEdit" class="rightNav overflow">
+                <div class="weui-panel weui-panel_access listItems">
+                    <div class="weui-cells__title">元素编辑</div>
+                </div>
+
+                <div id="editContainer">
+                    <div class="weui-form-preview">
+                        <div class="weui-form-preview__bd" style="padding:0; ">
+                            <div class="weui-form-preview__item table-border-bottom">
+                                <label class="weui-form-preview__label" style="margin-left: 15px">标题</label>
+                            </div>
+                            <div class="weui-form-preview__item">
+                <span class="weui-form-preview__label"style="margin-left: 15px">
+                     <input class="weui-input title" type="text" placeholder="请输入表单标题">
+                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weui-form-preview">
+                        <div class="weui-form-preview__bd" style="padding:0" id="option-container">
+                            <div class="weui-form-preview__item table-border-bottom">
+                                <label class="weui-form-preview__label table-margin-right table-margin-left">选项</label>
+                            </div>
+                            <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">
+                <span class="weui-form-preview__label input-width ">
+                     <input class="weui-input" type="text" placeholder="请输入选项">
+                </span>
+                            </div>
+                            <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">
+                <span class="weui-form-preview__label input-width">
+                     <input class="weui-input" type="text" placeholder="请输入选项">
+                </span>
+                            </div>
+                            <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">
+                <span class="weui-form-preview__label input-width">
+                     <input class="weui-input" type="text" placeholder="请输入选项">
+                </span>
+                            </div>
+                            <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">
+                <span class="weui-form-preview__label input-width">
+                     <input class="weui-input" type="text" placeholder="请输入选项">
+                </span>
+                            </div>
+                        </div>
+                        <div class="weui-form-preview__item table-margin-left" style="margin-top: 10px;">
+                            <svg class="icon icon-font-size-3 icon-active icon-pos add-option" aria-hidden="true">
+                                <use xlink:href="#icon-tianjia"></use>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weui-msg__opr-area">
+                    <p class="weui-btn-area">
+                        <a id="edit-commit" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                    </p>
+                </div>
+
+                <div class="weui-msg__opr-area">
+                    <p class="weui-btn-area">
+                        <a id="add-commit" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

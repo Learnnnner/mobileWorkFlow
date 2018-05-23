@@ -1,0 +1,11 @@
+body{background: #fff;}
+.auth-list .authitem{font-size: 14px;line-height: 40px;border-bottom: 1px solid #dedede;padding: 0 10px;}
+.authitem.auth1{color:#2ab7ff;}
+.authitem.auth2{}
+.authitem.auth3{padding-left: 30px;}
+.auth4{padding:10px;border-bottom: 1px solid #dedede;}
+.auth4 li{padding-left: 76px;line-height: 25px;}
+.icon-right-down{position:absolute;top:0px;right:0px;padding: 0 10px 0 10px;transition: all .2s}
+.icon-select{color:#ff9600;}
+.icon-checkbox{margin-right: 5px}
+.icon-close{transform: rotate(180deg);}
