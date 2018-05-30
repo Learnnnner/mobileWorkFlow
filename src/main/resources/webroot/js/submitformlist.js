@@ -17,7 +17,7 @@ approvalForm.service = {
                 if (200 == data.status) {
                     if(data.data.length > 0) {
                         for(var i = 0; i < data.data.length; ++ i) {
-                            var code = '<a class="weui-media-box weui-media-box_appmsg" data-dataId="'+ data.data[i][2] +'">\n' +
+                            var code = '<a class="weui-media-box weui-media-box_appmsg formItem" data-dataId="'+ data.data[i][2] +'">\n' +
                                 '                <div class="weui-media-box__bd">\n' +
                                 '                    <h4 class="weui-media-box__title">' + data.data[i][0] + data.data[i][1] + data.data[i][3] + '</h4>\n' +
                                 '                    <p class="weui-media-box__desc">\n' +
@@ -63,7 +63,7 @@ approvalForm.eventHandler = {
     handleEvents: function () {
         this.handleDetail();
     }, handleDetail: function () {
-        $(document).on('click', 'a', function () {
+        $(document).on('click', '.formItem', function () {
             var self = $(this);
             var dataId = self.data('dataid');
             location.href= MW.server + '/submitDetail?dataId=' + dataId;

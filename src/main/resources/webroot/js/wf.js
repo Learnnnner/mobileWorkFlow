@@ -14,17 +14,23 @@ var optList = [];           //操作对象的数据
 var nodeCount = 0;          //记录节点数量
 
 var next = ['填写表单', '经理审批', '总经理审批', '获得报销款'];
+var keywords = [];
 var node = {
     '填写表单': [
         {
             'keywords': ['金额'],
             'rule'    : ['小于'],
-            'value'   : [1000],
+
             'nextNode': '经理审批',
         }, {
             'keywords': ['金额'],
             'rule'    : ['大于'],
             'value'   : [1000],
+            'value'   : [1000],
+            'dealer'  : {
+                'relation': 'and',
+                'dealer': []
+            },
             'nextNode': '总经理审批',
         }
     ],
@@ -34,6 +40,11 @@ var node = {
             'keywords': ['默认'],
             'rule'    : ['默认'],
             'value'   : ['默认'],
+            'value'   : [1000],
+            'dealer'  : {
+                'relation': 'and',
+                'dealer': []
+            },
             'nextNode': '获得报销款',
         }
     ],
@@ -43,8 +54,12 @@ var node = {
             'keywords': ['默认'],
             'rule'    : ['默认'],
             'value'   : ['默认'],
+            'value'   : [1000],
+            'dealer'  : {
+                'relation': 'and',
+                'dealer': []
+            },
             'nextNode': '获得报销款',
-            // 'visible' : true
         }
     ],
 
@@ -198,6 +213,7 @@ workFlow.service = {
             ]
         });
     }, //条件列表
+
     showList: function() {
         $('#list').find('.listItem').remove();
 
