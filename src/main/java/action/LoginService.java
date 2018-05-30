@@ -44,9 +44,12 @@ public class LoginService {
                             jsonObject.put("status", 200);
                             jsonObject.put("message", "登陆成功");
                             Session session = routingContext.session();
+                            Integer userId = data.get(0).getInteger(0);
                             String loginname = data.get(0).getString(1);
                             session.put("loginname", loginname);
-                            routingContext.addCookie(Cookie.cookie("loginname", loginname));
+                            session.put("userId", ConvertTool.toString(userId));
+                            routingContext.addCookie(Cookie.cookie("loginname", loginname))
+                                    .addCookie(Cookie.cookie("userId", ConvertTool.toString(userId)));
                             routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
                         } else {
                             jsonObject.put("status", 500);

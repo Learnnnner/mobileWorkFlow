@@ -21,7 +21,7 @@ public class QueryTable {
         DataAccess dataAccess = DataAccess.create(vertx);
         dataAccess.getJDBCClient().getConnection(connfuture);
 
-        String sql = "SELECT id, name FROM form_templates";
+        String sql = "SELECT id, title FROM form_templates";
 
         resultFuture.setHandler(asyncResult -> {
             if(asyncResult.succeeded()) {

@@ -6,7 +6,8 @@ $(function () {
 
 var staffManage = {};
 var org = [];
-
+var edit = false;
+var optEle;
 var jsonData ={};
 
 staffManage.service = {
@@ -35,20 +36,23 @@ staffManage.service = {
                             jsonData[$data[i][1]].push($data[i]);
                         }
                     }
+
                     $.each(org, function(name, value) {
                         $('#staffs').append('<div id="' +  value.value + '" class="weui-cells__title">' + value.title + '</div>');
                         var code = ' <div class="weui-cells">';
                         for(var i = 0; i < jsonData[value.title].length; ++ i) {
-                            code += '<div class="weui-cell weui-cell_swiped" data-id="'+jsonData[value.title][i][2]+'">\n' +
-                                '            <div class="weui-cell__bd">\n' +
-                                '                <a class="weui-media-box weui-media-box_appmsg">\n' +
-                                '                    '+ jsonData[value.title][i][3] +'\n' +
-                                '                </a>\n' +
-                                '            </div>\n' +
-                                '            <div class="weui-cell__ft">\n' +
-                                '                <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout item-delete" href="javascript:">删除</a>\n' +
-                                '            </div>\n' +
-                                '        </div>';
+                            if(jsonData[value.title][i][2] != undefined && jsonData[value.title][i][2] != null) {
+                                code += '<div class="weui-cell weui-cell_swiped staffItem" data-id="'+jsonData[value.title][i][2]+'">\n' +
+                                    '            <div class="weui-cell__bd">\n' +
+                                    '                <a class="weui-media-box weui-media-box_appmsg">\n' +
+                                    '                    '+ jsonData[value.title][i][3] +'\n' +
+                                    '                </a>\n' +
+                                    '            </div>\n' +
+                                    '            <div class="weui-cell__ft">\n' +
+                                    '                <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout item-delete" href="javascript:">删除</a>\n' +
+                                    '            </div>\n' +
+                                    '        </div>';
+                            }
                         }
                         code += '</div>';
                         $('#staffs').append(code);
@@ -77,12 +81,19 @@ staffManage.eventHandler = {
     }, handleAdd: function () {
         $('#add').click(function () {
             $('input').val('');
+            edit = false;
             $("#info").popup();
         })
     }, handleSave: function () {
         $('#save').click(function () {
             var orgid = $('#department').data('values');
             var orgname = $('#department').val();
+            var url = "";
+            if(edit) {
+                url = MW.server + "/editOrgUser"
+            }else {
+                url = MW.server + "/addOrgUser"
+            }
 
             var userdata = {
                 id : $('#id').val(),
@@ -97,18 +108,21 @@ staffManage.eventHandler = {
 
             $.ajax({
                 type: "POST",
-                url: MW.server + "/addOrgUser",
+                url: url,
                 data: JSON.stringify(userdata),
                 dataType: "json",
                 success: function (data) {
                     if (200 == data.status) {
+                        if(edit) {
+                            optEle.remove();
+                        }
                         var s = '#'+ orgid;
                         var obj = $('#staffs').children(s).next();
                         var classname = obj.attr('class');
                         if($.inArray("weui-cells", classname)){
-                            obj.append('<div class="weui-cell weui-cell_swiped" data-id="' + $('#id').val() + '">\n' +
+                            obj.append('<div class="weui-cell weui-cell_swiped staffItem" data-id="' + $('#id').val() + '">\n' +
                                 '            <div class="weui-cell__bd">\n' +
-                                '                <a class="weui-media-box weui-media-box_appmsg">\n' +
+                                '                <a class="weui-media-box weui-media-box_appmsg ">\n' +
                                 '                    '+ $('#loginname').val() +'\n' +
                                 '                </a>\n' +
                                 '            </div>\n' +
@@ -117,7 +131,7 @@ staffManage.eventHandler = {
                                 '            </div>\n' +
                                 '        </div>');
                         } else {
-                            $('#staffs').insertAfter(s).append('<div class="weui-cell weui-cell_swiped" data-id="' + $('#id').val() + '">\n' +
+                            $('#staffs').insertAfter(s).append('<div class="weui-cell weui-cell_swiped staffItem" data-id="' + $('#id').val() + '">\n' +
                                 '            <div class="weui-cell__bd">\n' +
                                 '                <a class="weui-media-box weui-media-box_appmsg">\n' +
                                 '                    '+ $('#loginname').val() +'\n' +
@@ -164,6 +178,24 @@ staffManage.eventHandler = {
             })
         })
     }, handleEdit : function () {
-        
+        $(document).on('click', '.staffItem', function () {
+            edit = true;
+            var self = $(this);
+            optEle = $(this);
+            var editId = self.data('id');
+            var $org = self.parents('.weui-cells').prev().html();
+            for(var i = 0; i < jsonData[$org].length; ++ i) {
+                if(jsonData[$org][i][2] == editId) {
+                    $('#id').attr("disabled", true).val(editId);
+                    $('#realname').val(jsonData[$org][i][5]);
+                    $('#loginname').val(jsonData[$org][i][3]);
+                    $('#password').val(jsonData[$org][i][4]);
+                    $('#telephone').val(jsonData[$org][i][6]);
+                    $('#email').val(jsonData[$org][i][7]);
+                    $('#department').val($org);
+                }
+            }
+            $("#info").popup();
+        })
     }
 };

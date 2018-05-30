@@ -41,6 +41,10 @@
     margin-top: 1vw;
 }
 
+.option-margin-top {
+    margin-top: 2vw;
+}
+
 .table-border {
     border: 1px solid;
 }

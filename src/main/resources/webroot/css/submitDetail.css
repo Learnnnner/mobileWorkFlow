@@ -1,0 +1,29 @@
+.tag {
+    border: solid 1px;
+}
+
+.tag-size {
+    font-size: 6px;
+    padding: 0 3px;
+}
+
+.exp-size {
+    margin-left: 4px;
+    font-size: 10px;
+    color: #C0C0C0;
+}
+
+.color-r {
+    color: #DE5347;
+    border-color: #DE5347;
+}
+
+.color-g {
+    color: #1CA361;
+    border-color: #1CA361;
+}
+
+.color-b {
+    color: #4c8cf5;
+    border-color: #4c8cf5;
+}

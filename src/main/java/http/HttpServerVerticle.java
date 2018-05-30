@@ -2,6 +2,7 @@ package http;
 
 import action.Login;
 import action.RedirectAuth;
+import form.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
@@ -20,8 +21,12 @@ import org.org.EditOrg;
 import org.org.QueryOrg;
 import org.user.AddUser;
 import org.user.DeleteUser;
+import org.user.EditUser;
 import org.user.QueryUser;
+import workflow.template.AddTemplate;
 import workflow.template.QueryTemplate;
+import workflow.template.SaveFormData;
+import workflow.template.UpdateTemplate;
 import workflow.workflow.AddWorkflow;
 import workflow.workflow.QueryTable;
 import workflow.workflow.QueryWorkflow;
@@ -41,29 +46,45 @@ public class HttpServerVerticle extends AbstractVerticle {
 
         router.route().handler(CorsHandler.create("*").allowedMethod(HttpMethod.POST));
         router.route(HttpMethod.POST,"/login").handler(this::loginHandler);
+
+        //
         router.route("/function").handler(this::functionHandler);
         router.route("/edit").handler(this::editHandler);
         router.route("/myform").handler(this::myformHandler);
         router.route("/staffManage").handler(this::staffManageHandler);
 
+        //用户相关路由
         router.route("/fetchOrgUser").handler(this::fetchOrgUser);
         router.route("/addOrgUser").handler(this::addOrgUser);
         router.route("/deleteOrgUser").handler(this::deleteOrgUser);
-        router.route("/fillForm").handler(this::fillFormHandler);
+        router.route("/editOrgUser").handler(this::editUser);
 
+        //组织相关的路由
         router.route("/org").handler(this::orgHandler);
         router.route("/fetchOrgs").handler(this::fetchOrgs);
         router.route("/deleteOrg").handler(this::deleteOrg);
         router.route("/addOrg").handler(this::addOrg);
         router.route("/editOrg").handler(this::editOrg);
 
+        //填单
+        router.route("/fillForm").handler(this::fillFormHandler);
+        router.route("/fetchForm").handler(this::fetchFormHandler);
+        router.route("/fetchFormData").handler(this::fetchFormDataHandler);
+        router.route("/form").handler(this::formHandler);
+        router.route("/saveFormData").handler(this::dataSaveHandler);
+        router.route("/fetchSubmitForms").handler(this::fetchSubmitForms);
+        router.route("/submitDetail").handler(this::submitDetail);
+        router.route("/fetchUserData").handler(this::fetchUserData);
+
+        //模板
         router.route("/fetchTemplate").handler(this::fetchTemplate);
-        router.route("/table").handler(this::table);
+        router.route("/addTemplate").handler(this::addTemplate);
+        router.route("/updateTemplate").handler(this::updateTemplate);
+        router.route("/table").handler(this::design);
         router.route("/fetchTable").handler(this::fetchTable);
         router.route("/fetchwf").handler(this::fetchwf);
         router.route("/savewf").handler(this::savewf);
 
-        router.route("/editOrg").handler(this::editOrg);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -79,9 +100,53 @@ public class HttpServerVerticle extends AbstractVerticle {
                 });
     }
 
-    private void table(RoutingContext routingContext) {
+    private void editUser(RoutingContext routingContext) {
+        EditUser.edit(routingContext, vertx);
+    }
+
+    private void updateTemplate(RoutingContext routingContext) {
+        UpdateTemplate.update(routingContext, vertx);
+    }
+
+    private void fetchUserData(RoutingContext routingContext) {
+        QueryFormDataDetail.query(routingContext, vertx);
+    }
+
+    private void submitDetail(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        String filePath = "webroot/table.html";
+        String filePath = "webroot/submitDetail.html";
+        response.sendFile(filePath);
+    }
+
+    private void fetchSubmitForms(RoutingContext routingContext) {
+        QuerySubmitForms.query(routingContext, vertx);
+    }
+
+    private void dataSaveHandler(RoutingContext routingContext) {
+        SaveFormData.save(routingContext, vertx);
+    }
+
+    private void fetchFormDataHandler(RoutingContext routingContext) {
+        QueryFormData.query(routingContext, vertx);
+    }
+
+    private void formHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/form.html";
+        response.sendFile(filePath);
+    }
+
+    private void fetchFormHandler(RoutingContext routingContext) {
+        QueryForm.query(routingContext, vertx);
+    }
+
+    private void addTemplate(RoutingContext routingContext) {
+        AddTemplate.add(routingContext, vertx);
+    }
+
+    private void design(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/design.html";
         response.sendFile(filePath);
     }
 
@@ -137,7 +202,7 @@ public class HttpServerVerticle extends AbstractVerticle {
 
     private void fillFormHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
-        String filePath = "webroot/fillForm.html";
+        String filePath = "webroot/formSelect.html";
         response.sendFile(filePath);
     }
 

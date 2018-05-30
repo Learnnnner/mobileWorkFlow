@@ -5,21 +5,25 @@ $(function () {
 
 //type: single：单行文字，muti：多行文字，radio：单选，
 //checkbox：复选，date：日期，place：地点，number：数字，picture：图片
-var data = {
-    'title' : '人员信息表',
-    'body' : {
-        '姓名': {'type' : 'single', 'val' : ['']},
-        '性别': {'type' : 'radio', 'val' : ['man', 'women']},
-        '爱好': {'type' : 'checkbox', 'val' : ['书法','钢琴','篮球','足球']},
-        '个人说明': {'type' : 'muti', 'val' : ['']},
-        '日期': {'type' : 'date', 'val' : ['']},
-        '住址': {'type' : 'place', 'val' : ['']},
-        '电话': {'type' : 'number', 'val' : ['']},
-        '图片': {'type' : 'picture', 'val' : ['']}
-    },
-    'timestamp': [],
-    'designer': []
-};
+//如果元素的标题名称相同则覆盖
+// var data = {
+//     'title' : '人员信息表',
+//     'body' : {
+//         '姓名': {'type' : 'single', 'val' : ['']},
+//         '性别': {'type' : 'radio', 'val' : ['man', 'women']},
+//         '爱好': {'type' : 'checkbox', 'val' : ['书法','钢琴','篮球','足球']},
+//         '个人说明': {'type' : 'muti', 'val' : ['']},
+//         '日期': {'type' : 'date', 'val' : ['']},
+//         '住址': {'type' : 'place', 'val' : ['']},
+//         '电话': {'type' : 'number', 'val' : ['']},
+//         '图片': {'type' : 'picture', 'val' : ['']}
+//     },
+//     'timestamp': [],
+//     'designer': []
+// };
+
+var tableData = {};
+tableData.body = {};
 
 var elementCount = 7;
 var OptElem;
@@ -41,34 +45,36 @@ tableDesign.service = {
 
         wfid = this.getQueryVariable('id');
 
-        $.ajax({
-            type: "POST",
-            url: MW.server + "/fetchTemplate",
-            data: JSON.stringify({id: wfid}),
-            dataType: "json",
-            success: function (data) {
-                if (200 == data.status) {
-                    console.log(data.template);
+        if(wfid) {
+            $.ajax({
+                type: "POST",
+                url: MW.server + "/fetchTemplate",
+                data: JSON.stringify({id: wfid}),
+                dataType: "json",
+                success: function (data) {
+                    if (200 == data.status) {
+                        // console.log(data.template);
 
-                    // if(data.template.length > 0) {
-                    //     for(var i = 0; i < data.templateList.length; ++ i) {
-                    //         $('#templates').append('        ' +
-                    //             '<a id="'+ data.templateList[i][0] +'" class="weui-media-box weui-media-box_appmsg template">\n' +
-                    //             '            <div class="weui-media-box__bd">\n' +
-                    //             '                <h4 class="weui-media-box__title">' + data.templateList[i][1] + '</h4>\n' +
-                    //             '            </div>\n' +
-                    //             '        </a>')
-                    //     }
-                    // }
+                        // if(data.template.length > 0) {
+                        //     for(var i = 0; i < data.templateList.length; ++ i) {
+                        //         $('#templates').append('        ' +
+                        //             '<a id="'+ data.templateList[i][0] +'" class="weui-media-box weui-media-box_appmsg template">\n' +
+                        //             '            <div class="weui-media-box__bd">\n' +
+                        //             '                <h4 class="weui-media-box__title">' + data.templateList[i][1] + '</h4>\n' +
+                        //             '            </div>\n' +
+                        //             '        </a>')
+                        //     }
+                        // }
 
-                    // else {
-                    //     $.toptip("数据异常!", "error");
-                    // }
-                } else $.toptip("服务器访问异常!", "error");
-            }, error: function (data) {
-                $.toptip("服务器访问异常!", "error");
-            }
-        });
+                        // else {
+                        //     $.toptip("数据异常!", "error");
+                        // }
+                    } else $.toptip("服务器访问异常!", "error");
+                }, error: function (data) {
+                    $.toptip("服务器访问异常!", "error");
+                }
+            });
+        }else {}
 
     }, showList: function() {
         if(edit == true) {
@@ -100,7 +106,7 @@ tableDesign.service = {
     }, editTopic: function (topic) {
         $('#editContainer').append('    <div class="weui-form-preview">\n' +
             '        <div class="weui-form-preview__bd">\n' +
-            '            <div class="weui-form-preview__item table-border-bottom">\n' +
+            '            <div class="weui-form-preview__item">\n' +
             '                <label class="weui-form-preview__label">标题</label>\n' +
             '            </div>\n' +
             '            <div class="weui-form-preview__item">\n' +
@@ -114,8 +120,8 @@ tableDesign.service = {
         return newTopic;
     }, editOptions: function (options) {
         $('#editContainer').append('        <div class="weui-form-preview">\n' +
-            '            <div class="weui-form-preview__bd" id="option-container">\n' +
-            '                <div class="weui-form-preview__item table-border-bottom">\n' +
+            '            <div class="weui-form-preview__bd table-margin-top" id="option-container">\n' +
+            '                <div class="weui-form-preview__item ">\n' +
             '                    <label class="weui-form-preview__label">选项</label>\n' +
             '                </div>\n' +
             '            </div>\n' +
@@ -125,7 +131,7 @@ tableDesign.service = {
             $('#option-container').append(
                 '                <div class="weui-form-preview__item table-border table-margin-top">\n' +
                 '                <span class="weui-form-preview__label input-width">\n' +
-                '                     <input class="weui-input " type="text" placeholder="请输入选项,未输入文字则默认无此选项" value = "' + options[i] + '">\n' +
+                '                     <input class="weui-input " type="text" placeholder="请输入选项" value = "' + options[i] + '">\n' +
                 '                </span>\n' +
                 '                </div>\n');
         }
@@ -137,7 +143,7 @@ tableDesign.service = {
         return newOptions;
     }, addTopic: function () {
         $('#editContainer').append('    <div class="weui-form-preview">\n' +
-            '        <div class="weui-form-preview__bd"  style="padding:0; ">\n' +
+            '        <div class="weui-form-preview__bd" >\n' +
             '            <div class="weui-form-preview__item table-border-bottom">\n' +
             '                <label class="weui-form-preview__label" style="margin-left: 15px">标题</label>\n' +
             '            </div>\n' +
@@ -150,26 +156,11 @@ tableDesign.service = {
             '    </div>');
     }, addSelection: function () {
         $('#editContainer').append('        <div class="weui-form-preview">\n' +
-            '            <div class="weui-form-preview__bd" id="option-container">\n' +
+            '            <div class="weui-form-preview__bd table-margin-top" id="option-container">\n' +
             '                <div class="weui-form-preview__item table-border-bottom">\n' +
             '                    <label class="weui-form-preview__label">选项</label>\n' +
             '                </div>\n' +
-            '                <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">\n' +
-            '                <span class="weui-form-preview__label input-width">\n' +
-            '                     <input class="weui-input" type="text" placeholder="请输入选项">\n' +
-            '                </span>\n' +
-            '                </div>\n' +
-            '                <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">\n' +
-            '                <span class="weui-form-preview__label input-width">\n' +
-            '                     <input class="weui-input" type="text" placeholder="请输入选项">\n' +
-            '                </span>\n' +
-            '                </div>\n' +
-            '                <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">\n' +
-            '                <span class="weui-form-preview__label input-width">\n' +
-            '                     <input class="weui-input" type="text" placeholder="请输入选项">\n' +
-            '                </span>\n' +
-            '                </div>\n' +
-            '                <div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">\n' +
+            '                <div class="weui-form-preview__item table-border option-margin-top">\n' +
             '                <span class="weui-form-preview__label input-width">\n' +
             '                     <input class="weui-input" type="text" placeholder="请输入选项">\n' +
             '                </span>\n' +
@@ -249,7 +240,7 @@ tableDesign.service = {
                 selector.find('.option-container').append(
                     '                        <label class="weui-cell weui-check__label" style="left: 0" for="o'+ optionCount +'">\n' +
                     '                            <div class="weui-cell__hd ">\n' +
-                    '                                <input type="checkbox" class="weui-check" name="checkbox1" id="o'+ optionCount +'/>\n' +
+                    '                                <input type="checkbox" class="weui-check" name="checkbox1" id="o'+ optionCount +'">\n' +
                     '                                <i class="weui-icon-checked"></i>\n' +
                     '                            </div>\n' +
                     '                            <div class="weui-cell__bd">\n' +
@@ -260,6 +251,7 @@ tableDesign.service = {
             }
         }
 
+        return options;
     }, getQueryVariable: function (variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -292,12 +284,12 @@ tableDesign.eventHandler = {
                     onClick: function() {
                         tableDesign.service.addSingle();
                     }
-                } , {
+                },{
                     text: "多行文字",
                     onClick: function() {
                         tableDesign.service.addMuti();
                     }
-                } , {
+                },{
                     text: "单项选择",
                     onClick: function() {
                         tableDesign.service.addRadio();
@@ -307,22 +299,22 @@ tableDesign.eventHandler = {
                     onClick: function() {
                         tableDesign.service.addCheckbox();
                     }
-                } , {
+                },{
                     text: "日期",
                     onClick: function() {
                         tableDesign.service.addDate();
                     }
-                } , {
+                },{
                     text: "地点",
                     onClick: function() {
                         tableDesign.service.addCity();
                     }
-                } , {
+                },{
                     text: "图片",
                     onClick: function() {
                         tableDesign.service.addPic();
                     }
-                } , {
+                },{
                     text: "数字",
                     onClick: function() {
                         tableDesign.service.addNum();
@@ -335,6 +327,8 @@ tableDesign.eventHandler = {
             var self = $(this);
             $.confirm("确定要删除该元素吗？", function() {
                 var node = self.parents('.weui-form-preview');
+                var deltitle = node.find('.title').html();
+                delete tableData.body[deltitle];
                 node.remove();
             }, function() {
                 //点击取消后的回调函数
@@ -393,7 +387,7 @@ tableDesign.eventHandler = {
     },handleAddOption: function () {
         $(document).on('click', '.add-option',function () {
             $('#option-container').append(
-                '<div class="weui-form-preview__item table-border table-margin-top table-margin-left table-margin-right">\n' +
+                '<div class="weui-form-preview__item table-border table-margin-top ">\n' +
                 '                <span class="weui-form-preview__label input-width">\n' +
                 '                     <input class="weui-input" type="text" placeholder="请输入选项">\n' +
                 '                </span>\n' +
@@ -401,25 +395,35 @@ tableDesign.eventHandler = {
         });
     }, handleSave: function () {
         $('#table-save').click(function () {
-           void $.ajax({
+            var title = $('#table-title').val();
+            var desiger = $.cookie('userId');
+            var timeStamp = new Date().getTime();
+
+            tableData.title = title;
+            tableData.designer = desiger;
+            tableData.timeStamp = timeStamp;
+            tableData.elementCount = elementCount;
+
+            void $.ajax({
                 type: "POST",
-                url: MW.server + "/savetable",
-                data: JSON.stringify(data),
+                url: MW.server + "/addTemplate",
+                data: JSON.stringify(tableData),
                 dataType: "json",
                 success: function (data) {
                     if (200 == data.status) {
-                    } else $.alert("保存成功!")
+                        $.toptip("保存成功!", "success");
+                        window.history.back(-1);
+                    } else $.toptip("保存失败!", "error");
                 }, error: function (data) {
-                        $.alert("操作失败!请检查网络情况或与系统管理员联系！")
-                    }
+                    $.toptip("操作失败!请检查网络情况或与系统管理员联系！", "error")
+                }
             })
         })
     }, handleConfirmAdd: function () {
         $('#add-commit').click(function () {
-            var options = []
+            var options = [];
             var title;
             $('#editContainer input').each(function () {
-                console.log($(this).attr('id'));
                 if($(this).attr('id') == 'topic') {
                     title = $(this).val();
                     if(title == null || title == '' || title == undefined) {
@@ -479,26 +483,26 @@ tableDesign.eventHandler = {
                         '        </div>');
                     break;
                 case 'radio':
-                    $('#container > .weui-cells').append('        <div id="elem_' + elementCount + '" class="weui-form-preview table-margin-top" data-type="radio">\n' +
-                        '            <div class="weui-form-preview__bd" style="padding-left: 0; padding-bottom: 0; padding-right: 0">\n' +
-                        '                <div class="weui-form-preview__item">\n' +
-                        '                    <label class="weui-form-preview__label table-margin-left title-bottom title">'+ title +'</label>\n' +
-                        '                </div>\n' +
-                        '\n' +
-                        '                <div class="weui-form-preview__item">\n' +
-                        '                    <div class="weui-cells weui-cells_radio no-margin-top option-container">\n' +
+                    $('#container > .weui-cells').append(
+                        '<div id="elem_'+ elementCount +'" class="weui-form-preview table-margin-top" data-type="radio">\n' +
+                        '                        <div class="weui-form-preview__bd" style="padding-left: 0; padding-bottom: 0; padding-right: 0">\n' +
+                        '                            <div class="weui-form-preview__item">\n' +
+                        '                                <label class="weui-form-preview__label table-margin-left title-bottom">'+ title +'</label>\n' +
+                        '                            </div>\n' +
+                        '                            <div class="weui-form-preview__item">\n' +
+                        '                                <div class="weui-cells weui-cells_radio no-margin-top option-container">\n' +
 
-                        '                    </div>\n' +
-                        '                </div>\n' +
-                        '            </div>\n' +
-                        '\n' +
-                        '            <div class="weui-form-preview__ft">\n' +
-                        '                <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>\n' +
-                        '                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">\n' +
-                        '                    编辑\n' +
-                        '                </button>\n' +
-                        '            </div>\n' +
-                        '        </div>');
+                        '                                </div>\n' +
+                        '                            </div>\n' +
+                        '                        </div>\n' +
+                        '                        <div class="weui-form-preview__ft">\n' +
+                        '                            <a class="weui-form-preview__btn weui-form-preview__btn_default delete" href="javascript:">删除</a>\n' +
+                        '                            <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary edit" href="javascript:">\n' +
+                        '                                编辑\n' +
+                        '                            </button>\n' +
+                        '                        </div>\n' +
+                        '                    </div>'
+                        );
                     tableDesign.service.addOptions($('#elem_'+ elementCount), type);
                     break;
                 case 'checkbox':
@@ -620,6 +624,13 @@ tableDesign.eventHandler = {
                     break;
             }
             elementCount ++;
+
+            var temp = {
+                type : type,
+                options : options
+            };
+
+            tableData.body[title] = temp;
             tableDesign.service.hideList();
         })
     }

@@ -1,7 +1,6 @@
 $(function () {
-        workFlow.service.init();
-        workFlow.eventHandler.handleEvents();
-    }
+    workFlow.service.init();
+    workFlow.eventHandler.handleEvents();}
 );
 
 var workFlow = {};
@@ -22,13 +21,11 @@ var node = {
             'rule'    : ['小于'],
             'value'   : [1000],
             'nextNode': '经理审批',
-            // 'dealer' :  [10001]
         }, {
             'keywords': ['金额'],
             'rule'    : ['大于'],
             'value'   : [1000],
             'nextNode': '总经理审批',
-            // 'visible' : true
         }
     ],
 
@@ -38,7 +35,6 @@ var node = {
             'rule'    : ['默认'],
             'value'   : ['默认'],
             'nextNode': '获得报销款',
-            // 'visible' : true
         }
     ],
 

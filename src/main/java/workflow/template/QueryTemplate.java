@@ -17,10 +17,11 @@ public class QueryTemplate {
     public static void query(RoutingContext routingContext, Vertx vertx) {
         Future<SQLConnection> connfuture = Future.future();
         Future<ResultSet> resultFuture = Future.future();
-        JsonObject jsonObject = new JsonObject();
+        JsonObject jsonObject = routingContext.getBodyAsJson();
 
         DataAccess dataAccess = DataAccess.create(vertx);
         dataAccess.getJDBCClient().getConnection(connfuture);
+
         String id = ConvertTool.toString(jsonObject.getString("id"));
         JsonArray param = new JsonArray().add(id);
 
@@ -32,7 +33,7 @@ public class QueryTemplate {
                 List<JsonArray> data = rs.getResults();
                 JsonArray jsonArray = new JsonArray(data);
                 jsonObject.put("status", 200);
-                jsonObject.put("template", jsonArray);
+                jsonObject.put("data", jsonArray);
                 routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
             } else {
                 jsonObject.put("status", 500);
