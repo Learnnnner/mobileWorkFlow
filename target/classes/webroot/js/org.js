@@ -5,6 +5,7 @@ $(function () {
 
 var Org= {};
 var optObj;
+var authList;
 
 Org.service = {
     init: function () {
@@ -16,13 +17,12 @@ Org.service = {
             dataType: "json",
             success: function (data) {
                 if (200 == data.status) {
-                    console.log(data);
-                    for (var i = 0; i< data.orgList.length; ++i) {
+                    for (var i = 0; i< data.orgList.length; ++ i) {
                         $('#org-container').append('<div id="'+data.orgList[i][0]+'" class="weui-form-preview" style="margin-bottom: 2vw">\n' +
                             '                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">\n' +
                             '                    <div class="weui-media-box__bd">\n' +
                             '                        <h4 class="weui-media-box__title">' + data.orgList[i][1] + '</h4>\n' +
-                            '                        <p class="weui-media-box__desc">' + data.orgList[i][5] + '</p>\n' +
+                            '                        <p class="weui-media-box__desc">' + data.orgList[i][2] + '</p>\n' +
                             '                    </div>\n' +
                             '                </a>\n' +
                             '                <div class="weui-form-preview__ft">\n' +
@@ -31,10 +31,29 @@ Org.service = {
                             '                </div>\n' +
                             '            </div>')
                     }
+
+                    authList = data.authList;
+                    for (var i = 0; i< authList.length; ++ i) {
+                        $('#authorization').append('<div class="authority-option" style="margin-top: 0">\n' +
+                            '                        <table>\n' +
+                            '                            <tr>\n' +
+                            '                                <td>\n' +
+                            '                                    <div class="weui-grid__icon">\n' +
+                            '                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">\n' +
+                            '                                            <use xlink:href="'+ authList[i][4] +'"></use>\n' +
+                            '                                        </svg>\n' +
+                            '                                    </div>\n' +
+                            '                                </td>\n' +
+                            '                                <td>\n' +
+                            '                                    <input id="'+ authList[i][0] +'" class="weui-switch" type="checkbox">\n' +
+                            '                                </td>\n' +
+                            '                            </tr>\n' +
+                            '                        </table>\n' +
+                            '                    </div>')
+                    }
                 } else $.toptip('操作失败，请检查用户名或密码是否正确!', 'error');
             }, error:
                 function (data) {
-                    console.log(data.status);
                     $.toptip('操作失败!请检查网络情况或与系统管理员联系！', 'error');
                 }
         })
@@ -71,9 +90,7 @@ Org.eventHandler = {
                             $.toptip('操作失败!请检查网络情况或与系统管理员联系！', 'error');
                         }
                 })
-            }, function() {
-                //点击取消后的回调函数
-            });
+            }, function() {});
         })
     }, handleEdit: function () {
         $(document).on('click', '.edit', function () {
@@ -85,10 +102,48 @@ Org.eventHandler = {
             var description = node.find('.weui-media-box__desc').html();
             $('#edit-name').val(name);
             $('#edit-description').val(description);
-            $("#editPop").popup();
+            $.ajax({
+                type: "POST",
+                url: MW.server + "/fetchAuthList",
+                data: JSON.stringify({id: obj}),
+                dataType: "json",
+                success: function (data) {
+                    if (200 == data.status) {
+                        for(var i = 0; i< data.data.length; ++ i) {
+                            $('#'+data.data[i][0]).attr("checked","true");
+                        }
+                        $("#editPop").popup();
+                    } else $.toptip('操作失败，请检查用户名或密码是否正确!', 'error');
+                }, error:
+                    function (data) {
+                        $.toptip('操作失败!请检查网络情况或与系统管理员联系！', 'error');
+                    }
+            })
         })
     }, handleAdd: function () {
         $(document).on('click', '#add', function () {
+            $('#id').val();
+            $('#name').val();
+            $('#description').val();
+            $('#auth-Container').empty();
+            for (var i = 0; i< authList.length; ++ i) {
+                $('#auth-Container').append('<div class="authority-option" style="margin-top: 0">\n' +
+                    '                        <table>\n' +
+                    '                            <tr>\n' +
+                    '                                <td>\n' +
+                    '                                    <div class="weui-grid__icon">\n' +
+                    '                                        <svg class="icon-30px" style="color: #551A8B" aria-hidden="true">\n' +
+                    '                                            <use xlink:href="'+ authList[i][4] +'"></use>\n' +
+                    '                                        </svg>\n' +
+                    '                                    </div>\n' +
+                    '                                </td>\n' +
+                    '                                <td>\n' +
+                    '                                    <input data-id="'+ authList[i][0] +'" class="weui-switch" type="checkbox">\n' +
+                    '                                </td>\n' +
+                    '                            </tr>\n' +
+                    '                        </table>\n' +
+                    '                    </div>');
+            }
             $("#addList").popup();
         })
     }, handleSave: function () {
@@ -99,10 +154,16 @@ Org.eventHandler = {
             if(id == '' || id == undefined || id == null || name == '' || name == undefined || name == null) {
                 $.toptip('操作失败,请输入部门编号和名称', 'error');
             }else {
+                var authorization = [];
+                $('#auth-Container').find('input:checked').each(function () {
+                    authorization.push($(this).data('id'));
+                });
+
                 var data = {
                     'id': id,
                     'name' : name,
-                    'description': desciption
+                    'description': desciption,
+                    'authorization':authorization
                 }
 
                 $.ajax({
@@ -129,10 +190,17 @@ Org.eventHandler = {
             var id = optObj.attr('id');
             var name = $('#edit-name').val();
             var description = $('#edit-description').val();
+
+            var authorization = [];
+            $('#authorization').find('input:checked').each(function () {
+                authorization.push($(this).attr('id'));
+            });
+
             var data = {
                 'id': id,
                 'name': name,
-                'description': description
+                'description': description,
+                'authorization': authorization
             };
 
             $.ajax({

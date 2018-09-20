@@ -86,6 +86,7 @@ public class AddWorkflow {
                         jsonObject.put("message", "数据库操作异常");
                         routingContext.response().setStatusCode(500).end(Json.encodePrettily(jsonObject));
                     }
+                    connection.close();
                 });
             });
         }

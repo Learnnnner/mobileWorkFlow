@@ -22,8 +22,10 @@
     <script type="text/javascript" src="js/city-picker.js" charset="utf-8"></script>
     <script src="js/jquery.cookie.js"></script>
     <script src="js/formDesign.js"></script>
-    <script src="js/wf.js"></script>
     <script src="js/groupRule.js"></script>
+    <script src="js/staffSelect.js"></script>
+    <script src="js/wf.js"></script>
+
 </head>
 <body ontouchstart="">
 <div class="weui-tab">
@@ -34,7 +36,7 @@
         <a class="weui-navbar__item" href="#tab2">
             填单人
         </a>
-        <a class="weui-navbar__item" href="#tab3">
+        <a class="weui-navbar__item " href="#tab3">
             表单
         </a>
     </div>
@@ -69,49 +71,14 @@
                     <div class="weui-popup__modal">
 
                         <!--内容-->
-                        <div class="weui-panel weui-panel_access">
-                            <div class="weui-panel__hd">选择人员</div>
-                            <div class="weui-panel__bd">
-                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
-                                    <div class="weui-media-box__hd">
-                                        <img class="weui-media-box__thumb" src="img/boy.jpg">
-                                    </div>
-                                    <div class="weui-media-box__bd">
-                                        <h4 class="weui-media-box__title">boy</h4>
-                                    </div>
-                                    <div class="weui-media-box__bd" style="text-align: right">
-                                        <i class="weui-icon-circle"></i>
-                                    </div>
-                                </a>
-                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
-                                    <div class="weui-media-box__hd">
-                                        <img class="weui-media-box__thumb" src="img/girl.jpg">
-                                    </div>
-                                    <div class="weui-media-box__bd">
-                                        <h4 class="weui-media-box__title">girl</h4>
-                                    </div>
-                                    <div class="weui-media-box__bd" style="text-align: right">
-                                        <i class="weui-icon-circle"></i>
-                                    </div>
-                                </a>
-                                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg staff">
-                                    <div class="weui-media-box__hd">
-                                        <img class="weui-media-box__thumb" src="img/cat.jpg">
-                                    </div>
-                                    <div class="weui-media-box__bd">
-                                        <h4 class="weui-media-box__title">girl</h4>
-                                    </div>
-                                    <div class="weui-media-box__bd" style="text-align: right">
-                                        <i class="weui-icon-success"></i>
-                                    </div>
-                                </a>
-                            </div>
+                        <div class="weui-panel weui-panel_access" style="margin-top: 50px">
+                            <div id="dealer" class="weui-panel__bd"></div>
                         </div>
 
                         <!--按钮-->
                         <div class="weui-msg__opr-area">
                             <p class="weui-btn-area">
-                                <a id="staff-confirm" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
+                                <a id="dealer-confirm" href="javascript:;" class="weui-btn weui-btn_primary">确认</a>
                                 <a id="staff-cancel" href="javascript:;" class="weui-btn weui-btn_default">取消</a>
                             </p>
                         </div>
@@ -135,34 +102,40 @@
                 <!--跳转条件配置 结束-->
 
                 <!--跳转条件 开始-->
-                <div id="condition" class="rightNav overflow">
+                <div id="condition" class="rightNav overflow" style="background-color: #f8f8f8">
                     <div class="weui-cells__title">条件详细设置</div>
                     <div class="weui-cells weui-cells_form">
                         <div class="conditionItems">
                             <div class="conditionItem">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd"><label class="weui-label">关键字</label></div>
-                                    <div class="weui-cell__bd">
-                                        <input id="keywords" class="weui-input keywords" type="text" placeholder="请输入关键字">
-                                    </div>
-                                </div>
+                                <!--<div class="weui-cell">-->
+                                    <!--<div class="weui-cell__hd"><label class="weui-label" style="width: 70px">关键字</label></div>-->
+                                    <!--<div class="weui-cell__bd">-->
+                                        <!--<input id="keywords" class="weui-input keywords" type="text" placeholder="请输入关键字">-->
+                                    <!--</div>-->
+                                <!--</div>-->
 
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd"><label class="weui-label">规则</label></div>
-                                    <div class="weui-cell__bd">
-                                        <input id="rule" class="weui-input rule" type="text" placeholder="请输入规则">
-                                    </div>
-                                </div>
-
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd"><label class="weui-label">值</label></div>
-                                    <div class="weui-cell__bd">
-                                        <input class="weui-input value" type="text" placeholder="请输入值">
-                                    </div>
-                                </div>
+                                <!--<div class="weui-cell">-->
+                                    <!--<div class="weui-cell__hd"><label class="weui-label" style="width: 70px">规则</label></div>-->
+                                    <!--<div class="weui-cell__bd">-->
+                                        <!--<input id="rule-default" class="weui-input rule rule-default" type="text" placeholder="请输入规则">-->
+                                    <!--</div>-->
+                                    <!--<div class="weui-cell__bd">-->
+                                        <!--<input id="rule-date" class="weui-input rule rule-date" type="text" placeholder="请输入规则">-->
+                                    <!--</div>-->
+                                    <!--<div class="weui-cell__bd">-->
+                                        <!--<input id="rule-number" class="weui-input rule rule-number" type="text" placeholder="请输入规则">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="weui-cell">-->
+                                    <!--<div class="weui-cell__hd"><label class="weui-label" style="width: 70px">值</label></div>-->
+                                    <!--<div class="weui-cell__bd">-->
+                                        <!--<input class="weui-input value" type="text" placeholder="请输入值">-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                         </div>
 
+                        <div style="background-color: #f8f8f8;height: 8px"></div>
                         <div class="weui-cells__title">跳转至</div>
                         <div class="weui-cell">
                             <div class="weui-cell__bd">
@@ -184,30 +157,13 @@
 
         <div id="tab2" class="weui-tab__bd-item">
             <ul id="groupRule" style="margin-bottom: 60px"></ul>
-            <script type="text/javascript">
-                //应该是通过ajax请求过来的
-
-                var data = [
-                    {"id" : "1", "text" : "财务部", "spread" : true,"checked" : false, "childs" : [{"id" : "11", "text" : "张三"},
-                        {"id" : "12", "text" : "李四"}, {"id" : "13", "text" : "李四"}]},
-                    {"id" : "2","text" : "研发部", "spread" : true,"checked" : false, "childs":[{"id":"21","text" : "王五"},
-                        {"id" : "22", "text" : "赵六"}, {"id" : "22", "text" : "赵六"}]},
-                    {"id" : "3", "text" : "财务部", "spread" : true,"checked" : false, "childs" : [{"id" : "11", "text" : "张三"},
-                        {"id" : "12", "text" : "李四"}, {"id" : "13", "text" : "李四"}]},
-                    {"id" : "4","text" : "研发部", "spread" : true,"checked" : false, "childs":[{"id":"21","text" : "王五"},
-                        {"id" : "22", "text" : "赵六"}, {"id" : "22", "text" : "赵六"}]},
-                ];
-                
-                $(function(){
-                    $("#groupRule").groupRule({title : "测试", titleIcon : "&#x3104;", data : data});
-                });
-            </script>
+            <script type="text/javascript"></script>
 
             <div class="btn" style="width: 100%; position: fixed; bottom: 0px" >
                 <div class="weui-flex">
                     <div class="weui-flex__item" style="margin: 0 5vw">
-                        <a id="back" href="javascript:history.go(-1)" class="weui-btn weui-btn_primary">
-                            返回
+                        <a id="save" class="weui-btn weui-btn_primary">
+                            保存
                         </a>
                     </div>
                 </div>
@@ -240,7 +196,7 @@
 
             <div class="weui-msg__opr-area">
                 <p class="weui-btn-area">
-                    <a id="table-save" href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
+                    <a id="form-save" href="javascript:;" class="weui-btn weui-btn_primary">保存</a>
                 </p>
             </div>
 

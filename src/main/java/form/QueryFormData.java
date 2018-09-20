@@ -44,6 +44,7 @@ public class QueryFormData {
                     jsonObject.put("message", "数据库查询异常");
                     routingContext.response().setStatusCode(500).end(Json.encodePrettily(jsonObject));
                 }
+                connfuture.result().close();
             });
 
             connfuture.setHandler(asyncResult -> {

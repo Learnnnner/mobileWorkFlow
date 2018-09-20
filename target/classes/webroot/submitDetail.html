@@ -19,76 +19,54 @@
 <div id="tab" style="background-color: #FBFBFB;">
     <div style="background-color: #FFFFFF">
         <div class="weui-flex" style="padding: 25px 5px 5px 5px">
-            <div id="tag" class="tag tag-size color-b" style="margin: auto 0">审批中</div>
-            <div id="title" class="weui-flex__item" style="margin-left: 4px; font-size: 19px">管理员测试表单1527407835006</div>
+            <div id="tag" class="tag tag-size color-b" style="margin: auto 0"></div>
+            <div id="title" class="weui-flex__item" style="margin-left: 4px; font-size: 19px"></div>
         </div>
         <div class="weui-flex" style="margin: 0 4px; color: #999">
-            <div class="weui-flex__item">2018-5-25 14:57:54 admin</div>
+            <div class="weui-flex__item"></div>
         </div>
     </div>
-    <div id="dataList">
-        <!--<div class="weui-cells__title">单行文字</div>-->
-        <!--<div class="weui-cells">-->
-            <!--<div class="weui-cell">-->
-                <!--<div class="weui-cell__bd">-->
-                    <!--<div class="weui-media-box_appmsg">-->
-                        <!--ttt-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+    <div id="dataList"></div>
+    <div id = "node" style="display: none">
+        <div class="weui-cells__title">当前处理节点</div>
+        <div class="weui-cells">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div id="statusNow" class="weui-media-box_appmsg">经理审批</div>
+                </div>
+            </div>
+        </div>
 
-        <!--<div class="weui-cells__title">多行文字</div>-->
-        <!--<div class="weui-cells">-->
-            <!--<div class="weui-cell">-->
-                <!--<div class="weui-cell__bd">-->
-                    <!--<div class="weui-media-box_appmsg">-->
-                        <!--ttt-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="weui-cells__title">单项选择</div>-->
-        <!--<div class="weui-cells">-->
-            <!--<div class="weui-cell">-->
-                <!--<div class="weui-cell__bd">-->
-                    <!--<div class="weui-media-box_appmsg">-->
-                        <!--1-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="weui-cells__title">多项选择</div>-->
-        <!--<div class="weui-cells">-->
-            <!--<div class="weui-cell">-->
-                <!--<div class="weui-cell__bd">-->
-                    <!--<div class="weui-media-box_appmsg">-->
-                        <!--2-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="weui-cell">-->
-                <!--<div class="weui-cell__bd">-->
-                    <!--<div class="weui-media-box_appmsg">-->
-                        <!--3-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        <div class="weui-flex">
+            <div class="weui-flex__item" style="margin: 10px 5px">
+                <a id="back" href="javascript:history.back();" class="weui-btn weui-btn_primary">返回</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <div class="weui-flex">
+<div id="verify" style="display: none">
+    <div class="weui-flex" >
         <div class="weui-flex__item" style="margin: 10px 5px">
-            <a id="retire" class="weui-btn weui-btn_warn">退审</a>
+            <a id="recall" class="weui-btn weui-btn_warn">退审</a>
         </div>
         <div class="weui-flex__item" style="margin: 10px 5px">
             <a id="approval" class="weui-btn weui-btn_primary">审核</a>
         </div>
     </div>
 </div>
+
+<div id="detail" style="display: none">
+    <div class="weui-flex " >
+        <div class="weui-flex__item" style="margin: 10px 5px">
+            <a id="cancel" class="weui-btn weui-btn_warn">关闭申请</a>
+        </div>
+        <div class="weui-flex__item" style="margin: 10px 5px">
+            <a id="reEdit" class="weui-btn weui-btn_primary">重新编辑</a>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>

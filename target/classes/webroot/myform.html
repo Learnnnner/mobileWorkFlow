@@ -20,82 +20,63 @@
     <div class="weui-tab__bd">
         <div id="submit" class="weui-tab__bd-item weui-tab__bd-item--active" style="height: 100%">
             <div>
-                <div class="weui-search-bar" id="searchBar">
+                <div class="weui-search-bar" id="submit-searchBar">
                     <form class="weui-search-bar__form">
                         <div class="weui-search-bar__box">
                             <i class="weui-icon-search"></i>
-                            <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索" required="">
-                            <a href="javascript:" class="weui-icon-clear" id="searchClear"></a>
+                            <input type="search" class="weui-search-bar__input" id="submit-searchInput" placeholder="搜索" required="">
+                            <a href="javascript:" class="weui-icon-clear" id="submit-searchClear"></a>
                         </div>
-                        <label class="weui-search-bar__label" id="searchText">
+                        <label class="weui-search-bar__label" id="submit-searchText">
                             <i class="weui-icon-search"></i>
                             <span>搜索</span>
                         </label>
                     </form>
-                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="searchCancel">取消</a>
+                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="submit-searchCancel">取消</a>
                 </div>
 
                 <div>
                     <div class="weui-panel weui-panel_access">
-                        <div id="forms" class="weui-panel__bd">
-                            <!--<a class="weui-media-box weui-media-box_appmsg">-->
-                                <!--<div class="weui-media-box__bd">-->
-                                    <!--<h4 class="weui-media-box__title">标题一</h4>-->
-                                    <!--<p class="weui-media-box__desc">-->
-                                    <!--<table>-->
-                                        <!--<tr class="form-item">-->
-                                            <!--<td><div class="tag tag-size color-b">审批中</div></td>-->
-                                            <!--<td><div class="exp-size">审批单•2018/5/28</div></td>-->
-                                        <!--</tr>-->
-                                    <!--</table>-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</a>-->
-
-                            <!--<a class="weui-media-box weui-media-box_appmsg">-->
-                                <!--<div class="weui-media-box__bd">-->
-                                    <!--<h4 class="weui-media-box__title">标题二</h4>-->
-                                    <!--<p class="weui-media-box__desc">-->
-                                    <!--<table>-->
-                                        <!--<tr class="form-item">-->
-                                            <!--<td><div class="tag tag-size color-g">已审批</div></td>-->
-                                            <!--<td><div class="exp-size">审批单•2018/5/28</div></td>-->
-                                        <!--</tr>-->
-                                    <!--</table>-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</a>-->
-
-                            <!--<a class="weui-media-box weui-media-box_appmsg">-->
-                                <!--<div class="weui-media-box__bd">-->
-                                    <!--<h4 class="weui-media-box__title">标题三</h4>-->
-                                    <!--<p class="weui-media-box__desc">-->
-                                    <!--<table>-->
-                                        <!--<tr class="form-item">-->
-                                            <!--<td><div class="tag tag-size color-r">退审</div></td>-->
-                                            <!--<td><div class="exp-size">审批单•2018/5/28</div></td>-->
-                                        <!--</tr>-->
-                                    <!--</table>-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</a>-->
-                        </div>
+                        <div id="myforms" class="weui-panel__bd"></div>
                     </div>
                 </div>
-
             </div>
         </div>
+
         <div id="todo" class="weui-tab__bd-item">
-            <h1>待办</h1>
+            <div>
+                <div class="weui-search-bar" id="todo-searchBar">
+                    <form class="weui-search-bar__form">
+                        <div class="weui-search-bar__box">
+                            <i class="weui-icon-search"></i>
+                            <input type="search" class="weui-search-bar__input" id="todo-searchInput" placeholder="搜索" required="">
+                            <a href="javascript:" class="weui-icon-clear" id="todo-searchClear"></a>
+                        </div>
+                        <label class="weui-search-bar__label" id="todo-searchText">
+                            <i class="weui-icon-search"></i>
+                            <span>搜索</span>
+                        </label>
+                    </form>
+                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="todo-searchCancel">取消</a>
+                </div>
+
+                <div>
+                    <div class="weui-panel weui-panel_access">
+                        <div id="todo-forms" class="weui-panel__bd"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div id="tome" class="weui-tab__bd-item">
             <h1>我相关的</h1>
+            <h1>正在研发，敬请期待……</h1>
         </div>
     </div>
 
     <div class="weui-tabbar" style="position: fixed">
         <a href="#submit" class="weui-tabbar__item weui-bar__item--on ">
-            <span id="submitnum" class="weui-badge" style="position: absolute;top: -.4em;right: 3em;">8</span>
+            <span id="submitnum" class="weui-badge" style="position: absolute;top: -.4em;right: 3em; display: none"></span>
             <div class="weui-tabbar__icon weui-tabbar__label">
                 <svg class="tabar-icon " aria-hidden="true">
                     <use xlink:href="#icon-tijiao"></use>
@@ -105,7 +86,7 @@
         </a>
 
         <a href="#todo" class="weui-tabbar__item ">
-            <span id="todonum" class="weui-badge" style="position: absolute;top: -.4em;right: 3em;">8</span>
+            <span id="todonum" class="weui-badge" style="position: absolute;top: -.4em;right: 3em; display: none">8</span>
             <div class="weui-tabbar__icon weui-tabbar__label">
                 <svg class="tabar-icon" aria-hidden="true">
                     <use xlink:href="#icon-daitijiao"></use>
@@ -115,7 +96,6 @@
         </a>
 
         <a href="#tome" class="weui-tabbar__item ">
-            <span id="tomenum" class="weui-badge" style="position: absolute;top: -.4em;right: 3em;">8</span>
             <div class="weui-tabbar__icon weui-tabbar__label">
                 <svg class="tabar-icon" aria-hidden="true">
                     <use xlink:href="#icon-woxiangyaodegongnengicon"></use>

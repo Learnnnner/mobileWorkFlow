@@ -1,4 +1,4 @@
-package form;
+package auth;
 
 import database.DataAccess;
 import io.vertx.core.Future;
@@ -15,14 +15,12 @@ import tool.StringTool;
 
 import java.util.List;
 
-public class QuerySubmitForms {
+public class QueryAuthList {
     public static void query(RoutingContext routingContext, Vertx vertx) {
         Future<SQLConnection> connfuture = Future.future();
         Future<ResultSet> resultFuture = Future.future();
-        Session session = routingContext.session();
-
-        JsonObject jsonObject = new JsonObject();
-        String id = session.get("userId");
+        JsonObject jsonObject = routingContext.getBodyAsJson();
+        String id = jsonObject.getString("id");
 
 
         if (!StringTool.isEmpty(id)) {
@@ -30,34 +28,16 @@ public class QuerySubmitForms {
             dataAccess.getJDBCClient().getConnection(connfuture);
 
             JsonArray params = new JsonArray();
-            params.add(id).add("%" + id + "%");
-            String sql = "SELECT * FROM v_user_template_data where userId = ? OR dealer like ?";
+            String sql = "SELECT function_id FROM function_org_relation Where org_id = ?";
+            params.add(id);
 
             resultFuture.setHandler(asyncResult -> {
                 if(asyncResult.succeeded()) {
                     ResultSet rs = asyncResult.result();
                     List<JsonArray> data = rs.getResults();
-                    JsonArray mysubmit = new JsonArray();
-                    JsonArray tosubmit = new JsonArray();
-
-                    JsonObject formData = new JsonObject();
-
-
-                    for (int i = 0; i < data.size(); ++ i) {
-                        if(data.get(i).getInteger(0).toString().equals(id)){
-                            mysubmit.add(data.get(i));
-                        }else if(new JsonArray(data.get(i).getString(10)).contains(id)) {
-                            tosubmit.add(data.get(i));
-                        }else {
-                            continue;
-                        }
-                    }
-
-                    formData.put("mysubmit", mysubmit);
-                    formData.put("tosubmit", tosubmit);
 
                     jsonObject.put("status", 200);
-                    jsonObject.put("data", formData);
+                    jsonObject.put("data", data);
                     routingContext.response().setStatusCode(200).end(Json.encodePrettily(jsonObject));
                 } else {
                     jsonObject.put("status", 500);

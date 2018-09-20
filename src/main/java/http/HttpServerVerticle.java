@@ -1,12 +1,18 @@
 package http;
 
+import audit.ApprovalForm;
+import audit.CancelAudit;
+import audit.RecallForm;
 import action.Login;
 import action.RedirectAuth;
+import auth.QueryAuthList;
+import auth.QueryFormAuth;
 import form.*;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -15,17 +21,14 @@ import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
-import org.org.AddOrg;
-import org.org.DeleteOrg;
-import org.org.EditOrg;
-import org.org.QueryOrg;
+import org.org.*;
 import org.user.AddUser;
 import org.user.DeleteUser;
 import org.user.EditUser;
 import org.user.QueryUser;
 import workflow.template.AddTemplate;
 import workflow.template.QueryTemplate;
-import workflow.template.SaveFormData;
+import form.SaveFormData;
 import workflow.template.UpdateTemplate;
 import workflow.workflow.AddWorkflow;
 import workflow.workflow.QueryTable;
@@ -65,6 +68,7 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/deleteOrg").handler(this::deleteOrg);
         router.route("/addOrg").handler(this::addOrg);
         router.route("/editOrg").handler(this::editOrg);
+        router.route("/fetchAuthList").handler(this::fetchAuthList);
 
         //填单
         router.route("/fillForm").handler(this::fillFormHandler);
@@ -75,6 +79,9 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/fetchSubmitForms").handler(this::fetchSubmitForms);
         router.route("/submitDetail").handler(this::submitDetail);
         router.route("/fetchUserData").handler(this::fetchUserData);
+        router.route("/reEdit").handler(this::reEdit);
+        router.route("/fetchReEditData").handler(this::fetchReEditData);
+        router.route("/updateFormData").handler(this::updateFormData);
 
         //模板
         router.route("/fetchTemplate").handler(this::fetchTemplate);
@@ -85,6 +92,16 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/fetchwf").handler(this::fetchwf);
         router.route("/savewf").handler(this::savewf);
 
+        //审核
+        router.route("/RecallForm").handler(this::RecallForm);
+        router.route("/ApprovalForm").handler(this::ApprovalForm);
+        router.route("/CancelAudit").handler(this::CancelAudit);
+        router.route("/fetchTemplateId").handler(this::fetchTemplateId);
+
+        //授权
+        router.route("/myformAuth").handler(this::myformAuth);
+            
+        //默认
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -98,6 +115,44 @@ public class HttpServerVerticle extends AbstractVerticle {
                         startFuture.fail(ar.cause());
                     }
                 });
+    }
+
+    private void myformAuth(RoutingContext routingContext) {
+        QueryFormAuth.query(routingContext, vertx);
+    }
+
+    private void fetchAuthList(RoutingContext routingContext) {
+        QueryAuthList.query(routingContext, vertx);
+    }
+
+    private void updateFormData(RoutingContext routingContext) {
+        UpdateFormData.update(routingContext, vertx);
+    }
+
+    private void fetchReEditData(RoutingContext routingContext) {
+        QueryReEditData.query(routingContext, vertx);
+    }
+
+    private void reEdit(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String filePath = "webroot/reEdit.html";
+        response.sendFile(filePath);
+    }
+
+    private void fetchTemplateId(RoutingContext routingContext) {
+        QueryTemplateId.query(routingContext, vertx);
+    }
+
+    private void CancelAudit(RoutingContext routingContext) {
+        CancelAudit.cancel(routingContext, vertx);
+    }
+
+    private void RecallForm(RoutingContext routingContext) {
+        RecallForm.recall(routingContext, vertx);
+    }
+
+    private void ApprovalForm(RoutingContext routingContext) {
+        ApprovalForm.approve(routingContext, vertx);
     }
 
     private void editUser(RoutingContext routingContext) {
@@ -225,12 +280,15 @@ public class HttpServerVerticle extends AbstractVerticle {
     }
 
     private void indexHandler(RoutingContext routingContext) {
+        HttpServerRequest request = routingContext.request();
+        request.getHeader("User-Agent");
         HttpServerResponse response = routingContext.response();
         String filePath = "webroot/login.html";
         response.sendFile(filePath);
     }
 
     private void loginHandler(RoutingContext routingContext) {
+
         Login login = new Login(routingContext, vertx);
     }
 

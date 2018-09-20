@@ -1,43 +1,43 @@
 $(function () {
-    form.service.init();
-    form.eventHandler.handleEvents();
+    reEdit.service.init();
+    reEdit.eventHandler.handleEvents();
 });
 
-var form = {};
+var reEdit = {};
 var eleCount = 0;
 var optCount = 0;
-form.service = {
+reEdit.service = {
     init: function () {
         this.initControl();
     }, initControl : function () {
         var id= this.getQueryVariable('id');
-        if(id != null && id != undefined) {
+        var dataId= this.getQueryVariable('dataId');
+        if(id != null && id != undefined && dataId != null && dataId != undefined) {
             $.ajax({
                 type: "POST",
-                url: MW.server + "/fetchFormData",
-                data: JSON.stringify({id: id}),
+                url: MW.server + "/fetchReEditData",
+                data: JSON.stringify({
+                    id: id,
+                    dataId: dataId
+                }),
                 dataType: "json",
                 success: function (data) {
                     if (200 == data.status) {
-                        if(data.data.length == 1) {
-                            if(data.data[0][1] != undefined && data.data[0][1] != '' && data.data[0][1] != null) {
+                        if(data.data.length == 1 && data.data.length == data.template.length) {
+                            var jsonData = JSON.parse(data.data[0]);
+                            var title = data.template[0][0];
+                            var jsonTemplate = JSON.parse(data.template[0][1]);
+                            if(title != undefined && title != '' && title != null) {
                                 $('#form').append('        <div id="title" class="weui-cell table-border-bottom" style="text-align:center; background-color: #FFFFFF">\n' +
                                     '            <div class="weui-cell__hd" style="width:100%;text-align: center;">\n' +
-                                    '                <label>' + data.data[0][1] + '</label>\n' +
-                                    '            </div>\n' +
-                                    '        </div>')
-                            } else {
-                                $('#form').append('        <div id="title" class="weui-cell table-border-bottom" style="text-align:center; background-color: #FFFFFF">\n' +
-                                    '            <div class="weui-cell__hd" style="width:100%;text-align: center;">\n' +
-                                    '                <label>表单' + data.data[0][1] +'</label>\n' +
+                                    '                <label>' + title + '</label>\n' +
                                     '            </div>\n' +
                                     '        </div>')
                             }
 
-                            if(data.data[0][2] != undefined && data.data[0][2] != '' && data.data[0][2] != null) {
-                                var json = JSON.parse(data.data[0][2]);
-                                for(var ele in json) {
-                                    var type = json[ele].type;
+                            if(jsonTemplate != undefined && jsonTemplate != '' && jsonTemplate != null) {
+                                for(var ele in jsonTemplate) {
+                                    var type = jsonTemplate[ele].type;
                                     var code = '        <div id="elem_'+ eleCount++ +'" class="weui-form-preview table-margin-top" data-type="' + type + '">\n' +
                                         '            <div class="weui-form-preview__bd" style="padding-left: 0;padding-right: 0">\n' +
                                         '                <div class="weui-form-preview__item table-border-bottom " >\n' +
@@ -47,7 +47,7 @@ form.service = {
                                         case 'single':
                                             code += '                <div class="weui-form-preview__item">\n' +
                                                 '                <span class="weui-form-preview__label" style="margin-top: 10px">\n' +
-                                                '                     <input class="weui-input singleline-width table-margin-left" type="text" placeholder="请输入内容">\n' +
+                                                '                     <input class="weui-input singleline-width table-margin-left" value="' +jsonData[ele][0] +'" type="text" placeholder="请输入内容">\n' +
                                                 '                </span>\n' +
                                                 '                </div>';
                                             break;
@@ -56,7 +56,7 @@ form.service = {
                                                 '                    <div class="weui-form-preview__item">\n' +
                                                 '                        <div class="weui-cell">\n' +
                                                 '                            <div class="weui-cell__bd">\n' +
-                                                '                                <textarea class="weui-textarea textarea-font-family" placeholder="请输入内容" rows="4"></textarea>\n' +
+                                                '                                <textarea class="weui-textarea textarea-font-family" value="' +jsonData[ele][0] +'" placeholder="请输入内容" rows="4"></textarea>\n' +
                                                 '                            </div>\n' +
                                                 '                        </div>\n' +
                                                 '                    </div>\n' +
@@ -65,16 +65,29 @@ form.service = {
                                         case 'radio':
                                             code += '                <div class="weui-form-preview__item">\n' +
                                                 '                    <div class="weui-cells weui-cells_radio no-margin-top option-container">';
-                                            for(var i = 0; i < json[ele].options.length; ++ i) {
-                                                code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
-                                                    '                            <div class="weui-cell__bd">\n' +
-                                                    '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
-                                                    '                            </div>\n' +
-                                                    '                            <div class="weui-cell__ft">\n' +
-                                                    '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'"/>\n' +
-                                                    '                                <span class="weui-icon-checked"></span>\n' +
-                                                    '                            </div>\n' +
-                                                    '                        </label>';
+                                            for(var i = 0; i < jsonTemplate[ele].options.length; ++ i) {
+                                                if(jsonData.indexOf(jsonTemplate[ele].options[i] >= 0)) {
+                                                    code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
+                                                        '                            <div class="weui-cell__bd">\n' +
+                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                            </div>\n' +
+                                                        '                            <div class="weui-cell__ft">\n' +
+                                                        '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'"/>\n' +
+                                                        '                                <span class="weui-icon-checked checked"></span>\n' +
+                                                        '                            </div>\n' +
+                                                        '                        </label>';
+                                                } else {
+                                                    code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
+                                                        '                            <div class="weui-cell__bd">\n' +
+                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                            </div>\n' +
+                                                        '                            <div class="weui-cell__ft">\n' +
+                                                        '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'"/>\n' +
+                                                        '                                <span class="weui-icon-checked"></span>\n' +
+                                                        '                            </div>\n' +
+                                                        '                        </label>';
+                                                }
+
                                             }
                                             code +='</div></div>';
                                             break;
@@ -82,18 +95,29 @@ form.service = {
                                             code += '                <div class="weui-form-preview__item">\n' +
                                                 '                    <div class="weui-cells weui-cells_checkbox no-margin-top option-container">';
 
-                                            for(var i = 0; i< json[ele].options.length; ++ i) {
-                                                code += '                        <label class="weui-cell weui-check__label" style="left: 0" for="o'+ optCount +'">\n' +
-                                                    '                            <div class="weui-cell__hd ">\n' +
-                                                    '                                <input type="checkbox" class="weui-check" name="checkbox1" id="o'+ optCount++ +'"/>\n' +
-                                                    '                                <i class="weui-icon-checked"></i>\n' +
-                                                    '                            </div>\n' +
-                                                    '                            <div class="weui-cell__bd">\n' +
-                                                    '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
-                                                    '                            </div>\n' +
-                                                    '                        </label>';
+                                            for(var i = 0; i< jsonTemplate[ele].options.length; ++ i) {
+                                                if(jsonData.indexOf(jsonTemplate[ele].options[i] >= 0)) {
+                                                    code += '                        <label class="weui-cell weui-check__label" style="left: 0" for="o'+ optCount +'">\n' +
+                                                        '                            <div class="weui-cell__hd ">\n' +
+                                                        '                                <input type="checkbox" class="weui-check" name="checkbox1" id="o'+ optCount++ +'"/>\n' +
+                                                        '                                <i class="weui-icon-checked checked"></i>\n' +
+                                                        '                            </div>\n' +
+                                                        '                            <div class="weui-cell__bd">\n' +
+                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                            </div>\n' +
+                                                        '                        </label>';
+                                                }else {
+                                                    code += '                        <label class="weui-cell weui-check__label" style="left: 0" for="o'+ optCount +'">\n' +
+                                                        '                            <div class="weui-cell__hd ">\n' +
+                                                        '                                <input type="checkbox" class="weui-check" name="checkbox1" id="o'+ optCount++ +'"/>\n' +
+                                                        '                                <i class="weui-icon-checked"></i>\n' +
+                                                        '                            </div>\n' +
+                                                        '                            <div class="weui-cell__bd">\n' +
+                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                            </div>\n' +
+                                                        '                        </label>';
+                                                }
                                             }
-
                                             code +='</div></div>';
                                             break;
                                         case 'date':
@@ -101,7 +125,7 @@ form.service = {
                                                 '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
                                                 '                        <div class="weui-cell">\n' +
                                                 '                            <div class="weui-cell__bd" >\n' +
-                                                '                                <input id="date" class="weui-input float-left date-picker" placeholder="请输入日期" type="text" data-toggle=\'date\' readonly/>\n' +
+                                                '                                <input id="date" class="weui-input float-left date-picker" value="' +jsonData[ele][0] +'" placeholder="请输入日期" type="text" data-toggle=\'date\' readonly/>\n' +
                                                 '                            </div>\n' +
                                                 '                        </div>\n' +
                                                 '                    </div>\n' +
@@ -112,7 +136,7 @@ form.service = {
                                                 '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
                                                 '                        <div class="weui-cell">\n' +
                                                 '                            <div class="weui-cell__bd" >\n' +
-                                                '                                <input type="text" class="weui-input float-left city-picker" id="city-picker" />\n' +
+                                                '                                <input type="text" class="weui-input float-left city-picker" value="' +jsonData[ele][0] +'" id="city-picker" />\n' +
                                                 '                            </div>\n' +
                                                 '                        </div>\n' +
                                                 '                    </div>\n' +
@@ -123,7 +147,7 @@ form.service = {
                                                 '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
                                                 '                        <div class="weui-cell">\n' +
                                                 '                            <div class="weui-cell__bd" >\n' +
-                                                '                                <input type="number" pattern="[0-9]*" class="weui-input float-left" placeholder="请输入内容"/>\n' +
+                                                '                                <input type="number" pattern="[0-9]*" class="weui-input float-left" value="' +jsonData[ele][0] +'" placeholder="请输入内容"/>\n' +
                                                 '                            </div>\n' +
                                                 '                        </div>\n' +
                                                 '                    </div>\n' +
@@ -158,7 +182,6 @@ form.service = {
                         }else {
                             $.toptip("数据异常", 'error')
                         }
-
                     } else $.toptip("数据获取失败", 'error');
                 }, error: function (data) {
                     $.toptip("数据获取失败", 'error');
@@ -207,32 +230,33 @@ form.service = {
     }
 };
 
-form.eventHandler = {
+reEdit.eventHandler = {
     handleEvents: function () {
         this.handleSubmit();
     }, handleSubmit: function () {
         $('#submit').click(function () {
-            var data = form.service.getData();
+            var data = reEdit.service.getData();
             var timeStamp = new Date().getTime();
-            var templateId = form.service.getQueryVariable('id');
+            var templateId = reEdit.service.getQueryVariable('id');
+            var dataId = reEdit.service.getQueryVariable('dataId');
             $.ajax({
                 type: "POST",
-                url: MW.server + "/saveFormData",
+                url: MW.server + "/updateFormData",
                 data: JSON.stringify({
                     data : JSON.stringify(data),
                     timeStamp: timeStamp,
-                    templateId: templateId
+                    templateId: templateId,
+                    dataId: dataId
                 }),
                 dataType: "json",
                 success: function (data) {
                     if (200 == data.status) {
                         var url = MW.server + '/fillForm';
                         location.href = url;
-                        $.toptip('数据提交成功！', 'success');
-                    } else $.alert("登录失败，请检查用户名或密码是否正确!")
+                    } else $.alert("登录失败，请检查用户名或密码是否正确!");
                 }, error:
                     function (data) {
-                        $.alert("操作失败!请检查网络情况或与系统管理员联系！")
+                        $.alert("操作失败!请检查网络情况或与系统管理员联系！");
                     }
             })
         })

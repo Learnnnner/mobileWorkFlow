@@ -1,70 +1,64 @@
-$(function () {
-    workFlow.service.init();
-    workFlow.eventHandler.handleEvents();}
-);
-
+// $(function () {});
 var workFlow = {};
 var jspInstance;
 
-var tempNode;        //操作对象字典
+var wfData = {};        //wf数据
 var connArr = [];           //连线数组
 var name2Id = new Array();  //定义一个名称到ID的映射字典
 var optObj = {};            //记录操作的对象
 var optList = [];           //操作对象的数据
 var nodeCount = 0;          //记录节点数量
 
-var next = ['填写表单', '经理审批', '总经理审批', '获得报销款'];
+var next = []; //节点名称
+var eleName = []; //表单元素名称节点名称
+// var next = ['填写表单', '经理审批', '总经理审批', '获得报销款'];
 var keywords = [];
-var node = {
-    '填写表单': [
-        {
-            'keywords': ['金额'],
-            'rule'    : ['小于'],
 
-            'nextNode': '经理审批',
-        }, {
-            'keywords': ['金额'],
-            'rule'    : ['大于'],
-            'value'   : [1000],
-            'value'   : [1000],
-            'dealer'  : {
-                'relation': 'and',
-                'dealer': []
-            },
-            'nextNode': '总经理审批',
-        }
-    ],
-
-    '经理审批': [
-        {
-            'keywords': ['默认'],
-            'rule'    : ['默认'],
-            'value'   : ['默认'],
-            'value'   : [1000],
-            'dealer'  : {
-                'relation': 'and',
-                'dealer': []
-            },
-            'nextNode': '获得报销款',
-        }
-    ],
-
-    '总经理审批': [
-        {
-            'keywords': ['默认'],
-            'rule'    : ['默认'],
-            'value'   : ['默认'],
-            'value'   : [1000],
-            'dealer'  : {
-                'relation': 'and',
-                'dealer': []
-            },
-            'nextNode': '获得报销款',
-        }
-    ],
-
-    '获得报销款': []
-}
+// var node = {
+//     '填写表单': [
+//         {
+//             'keywords': ['金额'],
+//             'rule'    : ['小于'],
+//             'value'   : [1000],
+//             'nextNode': '经理审批',
+//         }, {
+//             'keywords': ['金额'],
+//             'rule'    : ['大于'],
+//             'value'   : [1000],
+//             'nextNode': '总经理审批',
+//         }
+//     ],
+//
+//     '经理审批': [
+//         {
+//             'keywords': ['默认'],
+//             'rule'    : ['默认'],
+//             'value'   : ['默认'],
+//             'value'   : [1000],
+//             'dealer'  : {
+//                 'relation': 'and',
+//                 'dealer': []
+//             },
+//             'nextNode': '获得报销款',
+//         }
+//     ],
+//
+//     '总经理审批': [
+//         {
+//             'keywords': ['默认'],
+//             'rule'    : ['默认'],
+//             'value'   : ['默认'],
+//             'value'   : [1000],
+//             'dealer'  : {
+//                 'relation': 'and',
+//                 'dealer': []
+//             },
+//             'nextNode': '获得报销款',
+//         }
+//     ],
+//
+//     '获得报销款': []
+// };
 
 // var node = {};
 
@@ -82,21 +76,57 @@ workFlow.service = {
     jspInitial: function () {
         jsPlumb.bind("ready",function() {});
     }, initControl: function () {
-        tempNode =  $.extend(true, {}, node);
+        // wfData =  $.extend(true, {}, node);
+        $('#rule-default').parents('.weui-cell__bd').css('display','inline');
+        $('#rule-date').parents('.weui-cell__bd').css('display','none');
+        $('#rule-number').parents('.weui-cell__bd').css('display','none');
+        //工作流数据初始化
+        for(var i in wfData) {
+            next.push(i);
+        }
+
+        eleName = ['默认'];
+
+        for(var i in formData.body) {
+            eleName.push(i);
+        }
+
         $(".keywords").picker({
             title: "请选择关键字",
             cols: [{
                     textAlign: 'center',
-                    values: ['默认', '金额', '日期']
+                    values: eleName
                 }]
         });
 
-        $(".rule").picker({
+        $(".rule-default").picker({
             title: "请选择规则",
-            cols: [{
+            cols: [
+                {
                     textAlign: 'center',
-                    values: ['大于', '小于']
-                }]
+                    values: ['包含','不包含']
+                }
+            ]
+        });
+
+        $(".rule-date").picker({
+            title: "请选择规则",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['早于', '等于', '晚于']
+                }
+            ]
+        });
+
+        $(".rule-number").picker({
+            title: "请选择规则",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['大于', '等于', '小于']
+                }
+            ]
         });
 
         $(".value").picker({
@@ -119,7 +149,6 @@ workFlow.service = {
             ]
         });
     }, initAction: function () {
-
         jspInstance = jsPlumb.getInstance(
             {
                 Anchor: 'Continuous',
@@ -131,7 +160,7 @@ workFlow.service = {
                 PaintStyle: connectorPaintStyle
             });
 
-        for (var i in tempNode) {
+        for (var i in wfData) {
             $("#workspace").append("<div id = 'action_" + nodeCount + "' class='action'>"+ i +"</div>\n");
             name2Id[i] =  'action_' + nodeCount;
             nodeCount ++;
@@ -141,16 +170,16 @@ workFlow.service = {
             containment: "workspace"
         });
 
-        for (var i in tempNode) {
-            for (var j in tempNode[i]) {
-                workFlow.service.connectModule(name2Id[i], name2Id[tempNode[i][j].nextNode]);
+        for (var i in wfData) {
+            for (var j in wfData[i].data) {
+                workFlow.service.connectModule(name2Id[i], name2Id[wfData[i].data[j].nextNode]);
             }
         }
 
     }, initCondition: function () {
         $('#condition').find('.conditionItems').empty().append('<div class="conditionItem">\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">关键字</label></div>\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">关键字</label></div>\n' +
             '                    <div class="weui-cell__bd">\n' +
             '                        <input id="keywords" class="weui-input keywords" type="text" placeholder="请输入关键字">\n' +
             '                    </div>\n' +
@@ -158,14 +187,20 @@ workFlow.service = {
             '                </div>\n' +
             '\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">规则</label></div>\n' +
-            '                    <div class="weui-cell__bd">\n' +
-            '                        <input id="rule" class="weui-input rule" type="text" placeholder="请输入规则">\n' +
-            '                    </div>\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">规则</label></div>\n' +
+            '<div class="weui-cell__bd">\n' +
+            '                                        <input id="rule-default" class="weui-input rule rule-default" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>\n' +
+            '                                    <div class="weui-cell__bd" style = "display: none;">\n' +
+            '                                        <input id="rule-date" class="weui-input rule rule-date" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>\n' +
+            '                                    <div class="weui-cell__bd" style = "display: none;">\n' +
+            '                                        <input id="rule-number" class="weui-input rule rule-number" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>' +
             '                </div>\n' +
             '\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">值</label></div>\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">值</label></div>\n' +
             '                    <div class="weui-cell__bd">\n' +
             '                        <input class="weui-input value" type="text" placeholder="请输入值">\n' +
             '                    </div>\n' +
@@ -173,35 +208,61 @@ workFlow.service = {
             '            </div>');
         $('.nextNode').val('');
 
+        eleName = ['默认'];
+
+        for(var i in formData.body) {
+            eleName.push(i);
+        }
+
         $(".keywords").picker({
             title: "请选择关键字",
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['金额', '日期']
+                    values: eleName
                 }
             ]
         });
 
-        $(".rule").picker({
+        $(".rule-default").picker({
             title: "请选择规则",
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['大于', '小于']
+                    values: ['包含','不包含']
                 }
             ]
         });
 
-        $(".value").picker({
+        $(".rule-date").picker({
             title: "请选择规则",
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['1000', '3000', '5000']
+                    values: ['早于', '等于', '晚于']
                 }
             ]
         });
+
+        $(".rule-number").picker({
+            title: "请选择规则",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['大于', '等于', '小于']
+                }
+            ]
+        });
+
+        // $(".value").picker({
+        //     title: "请选择规则",
+        //     cols: [
+        //         {
+        //             textAlign: 'center',
+        //             values: ['1000', '3000', '5000']
+        //         }
+        //     ]
+        // });
 
         $(".nextNode").picker({
             title: "请选择规则",
@@ -213,7 +274,6 @@ workFlow.service = {
             ]
         });
     }, //条件列表
-
     showList: function() {
         $('#list').find('.listItem').remove();
 
@@ -266,6 +326,8 @@ workFlow.service = {
         });
     }, //条件配置
     showConditionSet: function () {
+        workFlow.service.initCondition();
+
         $('#bgDiv2').css({
             display: "block",
             transition: "opacity .5s"
@@ -289,30 +351,6 @@ workFlow.service = {
     wfDistribute: function() {
         $.toptip('工作流已发布', 'success');
     }, //保存操作
-    wfSave: function () {
-
-        var data = {
-
-        };
-
-        $.ajax({
-            type: "POST",
-            url: MW.server + "/savewf",
-            data: JSON.stringify(userdata),
-            dataType: "json",
-            success: function (data) {
-                if (200 == data.status) {
-                    $.toptip('工作流已保存', 'success');
-                } else {
-
-                }
-            }, error: function (data) {
-                $.toptip("操作失败!请检查网络情况或与系统管理员联系！", 'error')
-            }
-        });
-
-
-    }, //清空操作
     wfEmpty: function () {
         $.confirm({
             title: '删除',
@@ -323,10 +361,9 @@ workFlow.service = {
                 optList.splice(0, optList.length);           //操作对象的数据
                 nodeCount = 0;
 
-                for(var key in tempNode){
-                    delete tempNode[key];
+                for(var key in wfData){
+                    delete wfData[key];
                 }
-
                 $('#workspace').empty();
             },
             onCancel: function () {
@@ -337,15 +374,20 @@ workFlow.service = {
     delAction: function () {
         $.confirm("确定要删除该模块吗", function() {
             var name = optObj.html();
-            delete tempNode[name];
+            delete wfData[name];
             jspInstance.remove(optObj);
 
-            for (var i in tempNode) {
-                for(var j in tempNode[i]) {
-                    if (tempNode[i][j].nextNode == name)
-                        tempNode[i].splice(j, 1);
+            for (var i in wfData) {
+                for(var j in wfData[i].data) {
+                    if (wfData[i].data[j].nextNode == name)
+                        wfData[i].data.splice(j, 1);
                 }
             }
+
+            for(var i in next) {
+                if(next[i] == name) next.splice(i, 1);
+            }
+
             $.toptip('删除成功', 'success');
         }, function() {
             return;
@@ -355,28 +397,52 @@ workFlow.service = {
         $.toptip('模板已设置', 'success');
     }, //设置关联人员
     setStaff: function () {
+        $("#dealer").groupRule({title : "关联人员", titleIcon : "&#x3104;", data : viewData, effect: 400});
+
+        if(wfData[optObj.html()].dealer) {
+            var $this = $("#dealer");
+            for(var i = 0; i < wfData[optObj.html()].dealer.length; ++ i) {
+                var id = '#' + wfData[optObj.html()].dealer[i];
+                var $chbox = $(id).find(".icon-checkbox");
+                $chbox.addClass('checked').html("&#x3127;");
+                var $pch = $this.find("[mhref='"+$chbox.attr('phref')+"']");
+                var $siblings = $this.find("[phref='"+$chbox.attr('phref')+"']");
+                var sum = $siblings.length;
+                var curr = $siblings.filter(".checked").length;
+                if(sum == curr){
+                    $pch.addClass("checked");
+                } else if(curr==0){
+                    $pch.removeClass("checked");
+                }
+                $pch.html(sum == curr?"&#x3127;" : curr == 0?"&#x3128;":"&#x3138;");
+            }
+        }
+
         $('#staff-list').popup();
     }, //添加一个跳转条件
     addConditionItem: function () {
         $(".conditionItems").append (
             '<div class="conditionItem">\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">关键字</label></div>\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">关键字</label></div>\n' +
             '                    <div class="weui-cell__bd">\n' +
             '                        <input id="keywords" class="keywords weui-input" type="text" placeholder="请输入关键字">\n' +
             '                    </div>\n' +
             '                </div>\n' +
-            '\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">规则</label></div>\n' +
-            '                    <div class="weui-cell__bd">\n' +
-            '                        <input id="rule" class="rule weui-input" type="text" placeholder="请输入规则">\n' +
-            '                    </div>\n' +
-            '\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">规则</label></div>\n' +
+            '<div class="weui-cell__bd">\n' +
+            '                                        <input id="rule-default" class="weui-input rule rule-default" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>\n' +
+            '                                    <div class="weui-cell__bd" style = "display: none;">\n' +
+            '                                        <input id="rule-date" class="weui-input rule rule-date" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>\n' +
+            '                                    <div class="weui-cell__bd" style = "display: none;">\n' +
+            '                                        <input id="rule-number" class="weui-input rule rule-number" type="text" placeholder="请输入规则">\n' +
+            '                                    </div>'+
             '                </div>\n' +
-            '\n' +
             '                <div class="weui-cell">\n' +
-            '                    <div class="weui-cell__hd"><label class="weui-label">值</label></div>\n' +
+            '                    <div class="weui-cell__hd"><label class="weui-label" style="width: 70px">值</label></div>\n' +
             '                    <div class="weui-cell__bd">\n' +
             '                        <input id="value" class="value weui-input" type="text" placeholder="请输入值">\n' +
             '                    </div>\n' +
@@ -389,33 +455,53 @@ workFlow.service = {
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['金额', '日期']
+                    values: eleName
                 }
             ]
         });
 
-        $(".rule").picker({
+        $(".rule-default").picker({
             title: "请选择规则",
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['大于', '小于']
+                    values: ['包含','不包含']
                 }
             ]
         });
 
-        $(".value").picker({
+        $(".rule-date").picker({
             title: "请选择规则",
             cols: [
                 {
                     textAlign: 'center',
-                    values: ['1000', '3000', '5000']
+                    values: ['早于', '等于', '晚于']
                 }
             ]
         });
+
+        $(".rule-number").picker({
+            title: "请选择规则",
+            cols: [
+                {
+                    textAlign: 'center',
+                    values: ['大于', '等于', '小于']
+                }
+            ]
+        });
+
+        // $(".value").picker({
+        //     title: "请选择规则",
+        //     cols: [
+        //         {
+        //             textAlign: 'center',
+        //             values: ['1000', '3000', '5000']
+        //         }
+        //     ]
+        // });
 
     }, getData: function(str) {
-        return tempNode[str] ;
+        return wfData[str].data ;
     }, addData: function () {
         var keyArr =[];
         var rulArr =[];
@@ -423,18 +509,52 @@ workFlow.service = {
         var next;
 
         if($('.keywords').val().length <= 1) {
+            var $this = $(this);
             keyArr.push($('.keywords').val());
-            rulArr.push($('.rule').val());
-            valArr.push($('.value').val());
+            if($('.keywords').val() == '默认') {
+                rulArr.push('默认');
+                valArr.push('默认');
+            }else {
+                var type = formData.body[$this.val()].type;
+                switch (type) {
+                    case 'number':
+                        rulArr.push($this.parents('.conditionItem').find('.rule-number').val());
+                        valArr.push($this.parents('.conditionItem').find('.value').val());
+                        break;
+                    case 'date':
+                        rulArr.push($this.parents('.conditionItem').find('.rule-date').val());
+                        valArr.push($this.parents('.conditionItem').find('.value').val());
+                        break;
+                    default:
+                        rulArr.push($this.parents('.conditionItem').find('.rule-default').val());
+                        valArr.push($this.parents('.conditionItem').find('.value').val());
+                }
+            }
             next = $('.nextNode').val();
         } else {
             $('.keywords').each(function () {
-                keyArr.push($(this).val());
-            }), $('.rule').each(function () {
-                rulArr.push($(this).val());
-            }), $('.value').each(function () {
-                valArr.push($(this).val());
-            }),
+                var $this = $(this);
+                keyArr.push($this.val());
+                if($this.val() == '默认') {
+                    rulArr.push('默认');
+                    valArr.push('默认');
+                }else {
+                    var type = formData.body[$this.val()].type;
+                    switch (type) {
+                        case 'number':
+                            rulArr.push($this.parents('.conditionItem').find('.rule-number').val());
+                            valArr.push($this.parents('.conditionItem').find('.value').val());
+                            break;
+                        case 'date':
+                            rulArr.push($this.parents('.conditionItem').find('.rule-date').val());
+                            valArr.push($this.parents('.conditionItem').find('.value').val());
+                            break;
+                        default:
+                            rulArr.push($this.parents('.conditionItem').find('.rule-default').val());
+                            valArr.push($this.parents('.conditionItem').find('.value').val());
+                    }
+                }
+            });
             next = $('.nextNode').val();
         }
 
@@ -503,10 +623,11 @@ workFlow.eventHandler = {
         this.handleCancelItems();
         this.handleItemDelete();
         this.handleConditionCancel();
+        this.handleRule();
     }, handleAddAction: function () {
         $(".module").click(function () {
             $.prompt("请输入模块名称", function(text) {
-                if(tempNode.hasOwnProperty(text)) {
+                if(wfData.hasOwnProperty(text)) {
                     $.toptip('模块添加失败，有重复的模块名称', 'error');
                     return;
                 }
@@ -517,7 +638,9 @@ workFlow.eventHandler = {
                     containment: "workspace"
                 });
 
-                tempNode[text] = [];
+                wfData[text]= {};
+                wfData[text].data = [];
+                wfData[text].dealer = [];
                 next.push(text);
                 name2Id[text] = $Id;
                 nodeCount ++;
@@ -536,7 +659,7 @@ workFlow.eventHandler = {
                 }, {
                     text: "保存",
                     onClick: function() {
-                        workFlow.service.wfSave();
+                        formDesign.service.saveData();
                     }
                 }, {
                     text: "清除",
@@ -545,7 +668,6 @@ workFlow.eventHandler = {
                     }
                 }]
             });
-
         })
     }, handleSetAction: function () {
         var move = false;
@@ -554,40 +676,47 @@ workFlow.eventHandler = {
         });
 
         $(document).on('touchend', '.action', function() {
-
             optObj = $(this);
             optList = workFlow.service.getData(optObj.html());
 
             if(!move) {
-                $.actions({
-                    actions: [{
-                        text: "设置模板",
-                        onClick: function() {
-                            workFlow.service.setTemplate();
-                        }
-                    }, {
-                        text: "设置条件",
-                        onClick: function() {
-                            workFlow.service.showList();
-                        }
-                    }, {
-                        text: "关联人员",
-                        onClick: function() {
-                            workFlow.service.setStaff();
-                        }
-                    }, {
-                        text: "删除",
-                        onClick: function() {
-                            workFlow.service.delAction();
-                        }
-                    }]
-                });
+                if(optObj.html() == '填写表单') {
+                    $.actions({
+                        actions: [{
+                            text: "设置条件",
+                            onClick: function() {
+                                workFlow.service.showList();
+                            }
+                        }]
+                    });
+                } else {
+                    $.actions({
+                        actions: [{
+                            text: "设置条件",
+                            onClick: function() {
+                                workFlow.service.showList();
+                            }
+                        }, {
+                            text: "关联人员",
+                            onClick: function() {
+                                workFlow.service.setStaff();
+                            }
+                        }, {
+                            text: "删除",
+                            onClick: function() {
+                                workFlow.service.delAction();
+                            }
+                        }]
+                    });
+                }
             }
             move = false;
         });
     }, //确认相关联的人员
     handleConfirmStaff: function () {
-        $('#staff-confirm').click(function () {
+        $('#dealer-confirm').click(function () {
+            var dealer = staffSelect.service.getdealer();
+            wfData[optObj.html()].dealer = dealer ? dealer: [];
             $.closePopup();
             $.toptip('人员已设置', 'success');
         });
@@ -604,7 +733,7 @@ workFlow.eventHandler = {
     }, //确认跳转条目
     handleConfirmItems: function () {
         $('#list-commit').click(function () {
-            node = tempNode;
+            // node = wfData;
             workFlow.service.hideList();
         });
     }, handleCancelItems: function () {
@@ -615,10 +744,14 @@ workFlow.eventHandler = {
     handleConfigureCondition: function () {
         $('#newCondition').click(function () {
             var keywords = $('.keywords');
-            var rule = $('.rule');
+            var ruleDefault = $('.rule-default');
+            var ruleDate = $('.rule-date');
+            var ruleNumber = $('.rule-number');
             var value = $('.value');
             for(var i = 0; i < keywords.length; i++) {
-                if(keywords.eq(i).val() == '' || rule.eq(i).val() == '' || value.eq(i).val() == '') {
+                if(keywords.eq(i).val() == '' ||
+                    (ruleDefault.eq(i).val() == '' && ruleDate.eq(i).val() == '' && ruleNumber.eq(i).val() == '')
+                    || value.eq(i).val() == '') {
                     $.toptip('有条件栏目为空，无法添加新条件', 'warning');
                     return;
                 }
@@ -628,7 +761,9 @@ workFlow.eventHandler = {
     }, handleConfirmCondition: function () {
         $('#condition-commit').click(function () {
             var keywords = $('.keywords');
-            var rule = $('.rule');
+            var ruleDefault = $('.rule-default');
+            var ruleDate = $('.rule-date');
+            var ruleNumber = $('.rule-number');
             var value = $('.value');
             var nextNode = $('.nextNode').val();
             var str = '';
@@ -636,7 +771,27 @@ workFlow.eventHandler = {
             for(var i = 0; i < keywords.length; i++) {
                 str += keywords.eq(i).val();
                 str += '&nbsp';
-                str += rule.eq(i).val();
+
+                if(keywords.eq(i).val() == '默认') {
+                    str += '默认';
+                    str += '&nbsp';
+                    str += '默认';
+                    str += '<br>';
+                    break;
+                }
+
+                var type = formData.body[keywords.eq(i).val()].type;
+                switch (type) {
+                    case 'number':
+                        str += ruleNumber.eq(i).val();
+                        break;
+                    case 'date':
+                        str += ruleDate.eq(i).val();
+                        break;
+                    default:
+                        str += ruleDefault.eq(i).val();
+                }
+                // str += rule.eq(i).val();
                 str += '&nbsp';
                 str += value.eq(i).val();
                 str += '<br>';
@@ -730,12 +885,45 @@ workFlow.eventHandler = {
             }, function() {
                 return;
             });
-
         })
     }, handleConditionCancel: function () {
         $('#condition-cancel').click(function () {
             workFlow.service.hideConditionSet();
             workFlow.service.initCondition();
+        })
+    }, handleRule : function () {
+        $(document).on('change', '.keywords',function () {
+            var $this = $(this).parents('.conditionItem');
+            var key = $this.find('.keywords').val();
+            if(key == '默认') {
+                $this.find('.rule-default').val('默认').attr("disabled","disabled");
+                $this.find('.rule-date').val('默认').attr("disabled","disabled");
+                $this.find('.rule-number').val('默认').attr("disabled","disabled");
+                $this.find('.value').val('默认').attr("disabled","disabled");
+                return;
+            }
+
+            $this.find('.rule-default').val('').removeAttr("disabled");
+            $this.find('.rule-date').val('').removeAttr("disabled");
+            $this.find('.rule-number').val('').removeAttr("disabled");
+            $this.find('.value').val('').removeAttr("disabled");
+            var type = formData.body[key].type;
+            switch (type) {
+                case 'number':
+                    $this.find('.rule-default').parents('.weui-cell__bd').css('display','none');
+                    $this.find('.rule-date').parents('.weui-cell__bd').css('display','none');
+                    $this.find('.rule-number').parents('.weui-cell__bd').css('display','inline');
+                    break;
+                case 'date':
+                    $this.find('.rule-default').parents('.weui-cell__bd').css('display','none');
+                    $this.find('.rule-date').parents('.weui-cell__bd').css('display','inline');
+                    $this.find('.rule-number').parents('.weui-cell__bd').css('display','none');
+                    break;
+                default:
+                    $this.find('.rule-default').parents('.weui-cell__bd').css('display','inline');
+                    $this.find('.rule-date').parents('.weui-cell__bd').css('display','none');
+                    $this.find('.rule-number').parents('.weui-cell__bd').css('display','none');
+            }
         })
     }
 };

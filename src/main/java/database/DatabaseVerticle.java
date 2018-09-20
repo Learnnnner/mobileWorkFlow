@@ -15,7 +15,7 @@ public class DatabaseVerticle extends AbstractVerticle {
         JDBCClient dbClient = JDBCClient.createShared(vertx, new JsonObject()
                 .put("url", "jdbc:mysql://localhost:3306/mwf")
                 .put("driver_class", "com.mysql.jdbc.Driver")
-                .put("max_pool_size", 30)
+                .put("max_pool_size", 300)
                 .put("user", "root")
                 .put("password", "h87210019"));
 

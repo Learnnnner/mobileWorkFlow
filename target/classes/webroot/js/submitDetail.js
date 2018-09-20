@@ -4,11 +4,12 @@ $(function () {
 });
 
 var submitDetail = {};
+var formdata
 submitDetail.service = {
     init: function () {
         this.initControl();
     }, initControl: function () {
-        var dataId = this.getQueryVariable('dataId');
+        var dataId = submitDetail.service.getQueryVariable('dataId');
         $.ajax({
             type: "POST",
             url: MW.server + "/fetchUserData",
@@ -20,8 +21,10 @@ submitDetail.service = {
                         var title = '' + data.data[0][2] + data.data[0][4] + data.data[0][7];
                         $('#tag').html(data.data[0][9]);
                         $('#title').html(title);
+                        $('#statusNow').html(data.data[0][8]);
 
-                        var formdata = JSON.parse(data.data[0][6]);
+                        formdata = JSON.parse(data.data[0][6]);
+
                         $.each(formdata,function(name, value) {
                             var code = '';
                             code += '        <div class="weui-cells__title">'+ name +'</div>\n' +
@@ -36,6 +39,17 @@ submitDetail.service = {
                             code += '</div>';
                             $('#dataList').append(code);
                         });
+
+                        var type = submitDetail.service.getQueryVariable("type");
+                        if(type == 'detail') {
+                            if(data.data[0][9] == "已退审"){
+                                $('#detail').css('display','');
+                            } else {
+                                $('#node').css('display','');
+                            }
+                        }else {
+                            $('#verify').css('display','');
+                        }
                     } else {
                         $.toptip('数据错误', 'error');
                     }
@@ -53,7 +67,7 @@ submitDetail.service = {
                 return pair[1];
             }
         }
-        return(null);
+        return (null);
     }
 };
 
@@ -61,13 +75,99 @@ submitDetail.eventHandler = {
     handleEvents: function () {
         this.handleRetire();
         this.handleApproval();
+        this.handleCancel();
+        this.handleReEdit();
     }, handleRetire: function () {
-        $('#retire').click(function () {
-            
+        $('#recall').click(function () {
+            var dataId = submitDetail.service.getQueryVariable('dataId');
+            $.confirm({
+                title: '审批拒绝',
+                text: '确认拒绝审批吗？',
+                onOK: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: MW.server + "/RecallForm",
+                        data: JSON.stringify({dataId: dataId}),
+                        dataType: "json",
+                        success: function (data) {
+                            if (200 == data.status) {
+                                $.toptip("审核完成", 'success');
+                                window.location = history.back();
+                            }
+                        }, error: function (data) {
+                            $.toptip("数据获取失败", 'error');
+                        }
+                    })
+                },
+                onCancel: function () {}
+            });
         })
     }, handleApproval: function () {
         $('#approval').click(function () {
-
+            var dataId = submitDetail.service.getQueryVariable('dataId');
+            $.confirm({
+                title: '审批通过',
+                text: '确定通过审批吗？',
+                onOK: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: MW.server + "/ApprovalForm",
+                        data: JSON.stringify({dataId: dataId}),
+                        dataType: "json",
+                        success: function (data) {
+                            if (200 == data.status) {
+                                $.toptip("审核完成", 'success');
+                                window.location = history.back();
+                            }
+                        }, error: function (data) {
+                            $.toptip("数据获取失败", 'error');
+                        }
+                    })
+                },
+                onCancel: function () {}
+            });
+        })
+    }, handleCancel: function () {
+        $('#cancel').click(function () {
+            var dataId = submitDetail.service.getQueryVariable('dataId');
+            $.confirm({
+                title: '关闭申请',
+                text: '确定关闭申请吗？',
+                onOK: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: MW.server + "/CancelAudit",
+                        data: JSON.stringify({dataId: dataId}),
+                        dataType: "json",
+                        success: function (data) {
+                            if (200 == data.status) {
+                                $.toptip("申请已关闭", 'success');
+                                window.location = history.back();
+                            }
+                        }, error: function (data) {
+                            $.toptip("申请已关闭失败", 'error');
+                        }
+                    })
+                },
+                onCancel: function () {}
+            });
+        })
+    }, handleReEdit: function () {
+        $('#reEdit').click(function () {
+            var dataId = submitDetail.service.getQueryVariable('dataId');
+            $.ajax({
+                type: "POST",
+                url: MW.server + "/fetchTemplateId",
+                data: JSON.stringify({dataId: dataId}),
+                dataType: "json",
+                success: function (data) {
+                    if (200 == data.status) {
+                        window.location = MW.server + '/reEdit?id=' + data.data[0][0] + '&dataId=' + dataId;
+                    }
+                }, error: function (data) {
+                    $.toptip("数据获取失败", 'error');
+                }
+            });
         })
     }
 };

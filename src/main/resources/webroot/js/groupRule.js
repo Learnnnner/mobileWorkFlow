@@ -1,4 +1,4 @@
-(function(root,factory){
+(function(root, factory){
     factory(root.jQuery);
 })(window, function($) {
     var __DEF__ = {
@@ -33,7 +33,7 @@
                 $.each(data.childs,function(j, data) {
                     code+='<li>'+
                         '<p class="authitem auth3 pr" data-id="' + data.id + '">' +
-                        '<span class="btn-toggle">' +
+                        '<span id="'+ data.id +'" class="btn-toggle">' +
                         '<span>' +
                         '<i class="iconfont icon-checkbox" style="color: #1aad19" mhref="'+data.id+'" phref="'+_data.id+'">&#x3128;</i>' +
                         '</span>' +

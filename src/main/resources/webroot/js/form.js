@@ -19,7 +19,6 @@ form.service = {
                 dataType: "json",
                 success: function (data) {
                     if (200 == data.status) {
-                        // console.log(data.data);
                         if(data.data.length == 1) {
                             if(data.data[0][1] != undefined && data.data[0][1] != '' && data.data[0][1] != null) {
                                 $('#form').append('        <div id="title" class="weui-cell table-border-bottom" style="text-align:center; background-color: #FFFFFF">\n' +
@@ -113,13 +112,22 @@ form.service = {
                                                 '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
                                                 '                        <div class="weui-cell">\n' +
                                                 '                            <div class="weui-cell__bd" >\n' +
-                                                '                                <input type="text" class="weui-input float-left city-picker" id=\'city-picker\' />\n' +
+                                                '                                <input type="text" class="weui-input float-left city-picker" id="city-picker" />\n' +
                                                 '                            </div>\n' +
                                                 '                        </div>\n' +
                                                 '                    </div>\n' +
                                                 '                </div>';
                                             break;
                                         case 'number':
+                                            code += '                <div class="weui-form-preview__item">\n' +
+                                                '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
+                                                '                        <div class="weui-cell">\n' +
+                                                '                            <div class="weui-cell__bd" >\n' +
+                                                '                                <input type="number" pattern="[0-9]*" class="weui-input float-left" placeholder="请输入内容"/>\n' +
+                                                '                            </div>\n' +
+                                                '                        </div>\n' +
+                                                '                    </div>\n' +
+                                                '                </div>';
                                             break;
                                         case 'picture':
                                             code += '                <div class="weui-form-preview__item">\n' +
@@ -194,7 +202,6 @@ form.service = {
                 var value = $(eles[i]).find('input').val();
                 data[title].push(value);
             }
-            // console.log($('#elem_1').find(':checkbox:checked'));
         }
         return data;
     }
@@ -207,12 +214,14 @@ form.eventHandler = {
         $('#submit').click(function () {
             var data = form.service.getData();
             var timeStamp = new Date().getTime();
+            var templateId = form.service.getQueryVariable('id');
             $.ajax({
                 type: "POST",
                 url: MW.server + "/saveFormData",
                 data: JSON.stringify({
                     data : JSON.stringify(data),
-                    timeStamp: timeStamp
+                    timeStamp: timeStamp,
+                    templateId: templateId
                 }),
                 dataType: "json",
                 success: function (data) {

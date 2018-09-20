@@ -20,13 +20,19 @@ public class AddTemplate {
         String timeStamp = ConvertTool.toString(jsonObject.getLong("timeStamp"));
         String elementCount = ConvertTool.toString(jsonObject.getInteger("elementCount"));
         String designer = jsonObject.getString("designer");
+        String wfSet = ConvertTool.toString(jsonObject.getJsonObject("wfSet"));
+        String nodeCount = ConvertTool.toString(jsonObject.getInteger("nodeCount"));
+        String userSet = ConvertTool.toString(jsonObject.getJsonArray("userSet"));
 
         JsonArray param = new JsonArray()
                 .add(title)
                 .add(attributes)
                 .add(designer)
                 .add(elementCount)
-                .add(timeStamp);
+                .add(timeStamp)
+                .add(wfSet)
+                .add(nodeCount)
+                .add(userSet);
 
         Future<SQLConnection> connfuture = Future.future();
         Future<UpdateResult> resultFuture = Future.future();
@@ -36,7 +42,7 @@ public class AddTemplate {
             DataAccess dataAccess = DataAccess.create(vertx);
             dataAccess.getJDBCClient().getConnection(connfuture);
 
-            String sql = "Insert into form_templates(title, attribute_set, designer_id, element_count, time_stamp) values (?, ?, ?, ?, ?)";
+            String sql = "Insert into form_templates(title, attribute_set, designer_id, element_count, time_stamp, wf_set, node_count, user_set) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
             resultFuture.setHandler(asyncResult -> {
                 if(asyncResult.succeeded()) {
@@ -47,6 +53,7 @@ public class AddTemplate {
                     jsonObject.put("message", "数据库操作异常");
                     routingContext.response().setStatusCode(500).end(Json.encodePrettily(jsonObject));
                 }
+                connfuture.result().close();
             });
 
             connfuture.setHandler(asyncResult -> {

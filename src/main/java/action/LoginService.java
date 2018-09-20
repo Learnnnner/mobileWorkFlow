@@ -64,6 +64,7 @@ public class LoginService {
                 } else {
 
                 }
+                connfuture.result().close();
             });
 
             connfuture.setHandler(asyncResult -> {

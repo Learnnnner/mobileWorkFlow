@@ -14,33 +14,39 @@ import tool.StringTool;
 
 public class UpdateTemplate {
     public static void update(RoutingContext routingContext, Vertx vertx) {
-        JsonObject jsonObject = routingContext.getBodyAsJson();
-        String id = ConvertTool.toString(jsonObject.getString("id"));
-        String dataString = ConvertTool.toString(jsonObject.getString("data"));
+        JsonObject data = routingContext.getBodyAsJson();
+        String id = ConvertTool.toString(data.getString("id"));
+        JsonObject jsonObject = new JsonObject(data.getString("data"));
 
-        JsonObject data = new JsonObject(dataString);
-
-        String attribute = ConvertTool.toString(data.getJsonObject("body")) ;
-        String designer = data.getString("designer");
-        String elementCount = ConvertTool.toString(data.getInteger("elementCount"));
-        String timeStamp = ConvertTool.toString(data.getLong("timeStamp"));
+        String title = ConvertTool.toString(jsonObject.getString("title"));
+        String attributes = ConvertTool.toString(jsonObject.getJsonObject("body"));
+        String timeStamp = ConvertTool.toString(jsonObject.getLong("timeStamp"));
+        String elementCount = ConvertTool.toString(jsonObject.getInteger("elementCount"));
+        String designer = jsonObject.getString("designer");
+        String wfSet = ConvertTool.toString(jsonObject.getJsonObject("wfSet"));
+        String nodeCount = ConvertTool.toString(jsonObject.getInteger("nodeCount"));
+        String userSet = ConvertTool.toString(jsonObject.getJsonArray("userSet"));
 
         JsonArray param = new JsonArray()
-                .add(attribute)
+                .add(title)
+                .add(attributes)
                 .add(designer)
                 .add(elementCount)
                 .add(timeStamp)
+                .add(wfSet)
+                .add(nodeCount)
+                .add(userSet)
                 .add(id);
 
         Future<SQLConnection> connfuture = Future.future();
         Future<UpdateResult> resultFuture = Future.future();
 
-        if (!StringTool.isEmpty(id)) {
+        if (!StringTool.isEmpty(title)) {
 
             DataAccess dataAccess = DataAccess.create(vertx);
             dataAccess.getJDBCClient().getConnection(connfuture);
 
-            String sql = "update form_templates set attribute_set = ?, designer_id = ?, element_count = ?, time_stamp = ? where id = ?";
+            String sql = "update form_templates set title = ?, attribute_set = ?, designer_id = ?, element_count = ?, time_stamp = ?, wf_set = ?, node_count = ?, user_set = ? where id = ?";
 
             resultFuture.setHandler(asyncResult -> {
                 if(asyncResult.succeeded()) {
@@ -51,6 +57,7 @@ public class UpdateTemplate {
                     jsonObject.put("message", "数据库操作异常");
                     routingContext.response().setStatusCode(500).end(Json.encodePrettily(jsonObject));
                 }
+                connfuture.result().close();
             });
 
             connfuture.setHandler(asyncResult -> {
@@ -61,5 +68,6 @@ public class UpdateTemplate {
                 }
             });
         }
+
     }
 }

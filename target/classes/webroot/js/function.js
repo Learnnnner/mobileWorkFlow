@@ -15,6 +15,27 @@ fun.service = {
             window.href = MW.server + '/index';
         }else {}
         $('#user').html(loginname);
+    }, auth: function (id) {
+        $.ajax({
+            type: "POST",
+            url: MW.server + "/myformAuth",
+            data: JSON.stringify({
+                id: id
+            }),
+            dataType: "json",
+            success: function (data) {
+                if (200 == data.status) {
+                    if(data.url.length > 0) {
+                        var url = MW.server + data.url[0];
+                        location.href = url;
+                    }else {
+                        $.toptip("没有访问权限!", "error");
+                    }
+                } else $.toptip("跳转异常，请稍后再试!", "error");
+            }, error: function (data) {
+                $.toptip("跳转异常，请稍后再试!", "error");
+            }
+        })
     }
 }
 
@@ -29,8 +50,7 @@ fun.eventHandler = {
         this.handleLogout();
     }, handleMyForm: function () {
         $('#myform').click(function () {
-            var url = MW.server + '/myform'
-            location.href = url;
+            fun.service.auth("1");
         })
     }, handleEdit: function () {
         $('#edit').click(function () {
