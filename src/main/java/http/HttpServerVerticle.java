@@ -1,5 +1,6 @@
 package http;
 
+import PC.Profile;
 import audit.ApprovalForm;
 import audit.CancelAudit;
 import audit.RecallForm;
@@ -26,6 +27,7 @@ import org.user.AddUser;
 import org.user.DeleteUser;
 import org.user.EditUser;
 import org.user.QueryUser;
+import util.UserAgentUtil;
 import workflow.template.AddTemplate;
 import workflow.template.QueryTemplate;
 import form.SaveFormData;
@@ -65,6 +67,7 @@ public class HttpServerVerticle extends AbstractVerticle {
         //组织相关的路由
         router.route("/org").handler(this::orgHandler);
         router.route("/fetchOrgs").handler(this::fetchOrgs);
+        router.route("/fetchOrgsAuth").handler(this::fetchOrgsAuth);
         router.route("/deleteOrg").handler(this::deleteOrg);
         router.route("/addOrg").handler(this::addOrg);
         router.route("/editOrg").handler(this::editOrg);
@@ -96,12 +99,18 @@ public class HttpServerVerticle extends AbstractVerticle {
         router.route("/RecallForm").handler(this::RecallForm);
         router.route("/ApprovalForm").handler(this::ApprovalForm);
         router.route("/CancelAudit").handler(this::CancelAudit);
-        router.route("/fetchTemplateId").handler(this::fetchTemplateId);
+        router.route("/fetchTemplateTable").handler(this::fetchTemplateTable);
 
         //授权
         router.route("/myformAuth").handler(this::myformAuth);
-            
+
+        //PC
+        router.route("/fetchTemplateId").handler(this::fetchTemplateId);
+        router.route("/fetchProfile").handler(this::fetchProfile);
+
         //默认
+        router.route("/PC/index").handler(this::pcIndexHandler);
+        router.route("/PC/*").handler(this::pcFileHandler);
         router.route("/:fileType/:file").handler(this::fileHandler);
         router.route("/*").handler(this::indexHandler);
 
@@ -115,6 +124,14 @@ public class HttpServerVerticle extends AbstractVerticle {
                         startFuture.fail(ar.cause());
                     }
                 });
+    }
+
+    private void fetchProfile(RoutingContext routingContext) {
+        Profile.query(routingContext, vertx);
+    }
+
+    private void fetchTemplateTable(RoutingContext routingContext) {
+        QueryTemplateTable.query(routingContext, vertx);
     }
 
     private void myformAuth(RoutingContext routingContext) {
@@ -255,6 +272,10 @@ public class HttpServerVerticle extends AbstractVerticle {
         QueryOrg.query(routingContext, vertx);
     }
 
+    private void fetchOrgsAuth(RoutingContext routingContext) {
+        QueryOrgAuth.query(routingContext, vertx);
+    }
+
     private void fillFormHandler(RoutingContext routingContext) {
         HttpServerResponse response = routingContext.response();
         String filePath = "webroot/formSelect.html";
@@ -281,14 +302,21 @@ public class HttpServerVerticle extends AbstractVerticle {
 
     private void indexHandler(RoutingContext routingContext) {
         HttpServerRequest request = routingContext.request();
-        request.getHeader("User-Agent");
-        HttpServerResponse response = routingContext.response();
-        String filePath = "webroot/login.html";
-        response.sendFile(filePath);
+        String userAgent =  request.getHeader("User-Agent");
+        if(userAgent != null) {
+            boolean isMobile = UserAgentUtil.JudgeIsMoblie(userAgent);
+            HttpServerResponse response = routingContext.response();
+            String filePath = "";
+            if(isMobile) {
+                filePath = "webroot/login.html";
+            }else {
+                filePath = "webroot/PC/login.html";
+            }
+            response.sendFile(filePath);
+        }
     }
 
     private void loginHandler(RoutingContext routingContext) {
-
         Login login = new Login(routingContext, vertx);
     }
 
@@ -309,5 +337,23 @@ public class HttpServerVerticle extends AbstractVerticle {
         String file = routingContext.request().getParam("file");
         String filePath = "webroot/" + fileType + "/" + file;
         response.sendFile(filePath);
+    }
+
+    private void pcFileHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        String file = routingContext.request().path();
+        String filePath = "webroot" + file;
+        response.sendFile(filePath);
+    }
+
+    private void pcIndexHandler(RoutingContext routingContext) {
+        HttpServerResponse response = routingContext.response();
+        boolean flag = RedirectAuth.redirectAuth(routingContext);
+        if(flag) {
+            String filePath = "webroot/PC/index.html";
+            response.sendFile(filePath);
+        }else {
+            response.sendFile("webroot/login.html");
+        }
     }
 }
