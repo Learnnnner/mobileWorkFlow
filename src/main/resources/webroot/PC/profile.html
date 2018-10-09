@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <link rel="stylesheet" href="js/plugins/layui/css/layui.css">
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/plugins/layui/layui.all.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/service/profile.js"></script>
+    <title>移动工作流管理端-个人资料</title>
+</head>
+<body style="">
+<div style="width: 80%;margin:auto">
+    <div style="text-align: center; margin: 2vw">
+        <h1>个人信息</h1>
+    </div>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">ID</label>
+            <div class="layui-input-block">
+                <input id="id" type="text" placeholder="" class="layui-input" value="-1" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">登陆账号</label>
+            <div class="layui-input-block">
+                <input id="loginname" type="text" placeholder="" class="layui-input" value="error" readonly>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input id="realname" type="text" placeholder="请输入姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input id="password" type="password" placeholder="请输入密码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-block">
+                <input id="telephone" type="text" placeholder="请输入手机号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">email</label>
+            <div class="layui-input-block">
+                <input id="email" type="text" placeholder="请输入邮箱" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">组织</label>
+            <div class="layui-input-block">
+                <select id="orgs" name="interest" lay-filter="zuzhi">
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
+    <button class="layui-btn" id="submit" style="margin-left: 83vw;margin-top: 2vw">确定</button>
+</body>
+</html>
