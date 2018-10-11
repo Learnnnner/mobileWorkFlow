@@ -27,7 +27,7 @@ templateSelect.service = {
                     }else {
                         $.toptip("数据异常!", "error");
                     }
-                } else $.toptip("服务器访问异常!", "error");
+                } else  $.toptip("服务器访问异常!", "error");
             }, error: function (data) {
                 $.toptip("服务器访问异常!", "error");
             }

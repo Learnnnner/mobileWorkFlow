@@ -10,7 +10,6 @@ fun.service = {
         this.initControl();
     }, initControl: function () {
         var loginname = $.cookie('loginname');
-
         if(loginname == null || loginname == '') {
             window.href = MW.server + '/index';
         }else {}

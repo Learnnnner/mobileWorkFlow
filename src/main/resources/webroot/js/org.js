@@ -71,7 +71,7 @@ Org.eventHandler = {
     }, handleDelete: function () {
         $(document).on('click', '.delete', function () {
             var self = $(this);
-            $.confirm("确定要删除该元素吗？", function() {
+            $.confirm("确定要删除该部门吗？", function() {
                 var node = self.parents('.weui-form-preview');
                 var id = node.attr('id');
                 var data = {'id' : id};

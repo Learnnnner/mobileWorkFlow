@@ -33,6 +33,7 @@ var formDesign = {};
 var optionCount = 0;
 var editCount = 0;
 var wfid;
+var optCount = 0;
 
 
 formDesign.service = {
@@ -694,7 +695,7 @@ formDesign.eventHandler = {
                         '                    <div class="weui-cells weui-cells_form no-margin-top">\n' +
                         '                        <div class="weui-cell">\n' +
                         '                            <div class="weui-cell__bd" >\n' +
-                        '                                <input id="date" class="weui-input float-left date-picker" placeholder="请输入日期" type="text" data-toggle=\'date\' readonly/>\n' +
+                        '                                <input id="date" class="weui-input float-left date-picker" placeholder="请输入日期" type="text" data-toggle="date" readonly/>\n' +
                         '                            </div>\n' +
                         '                        </div>\n' +
                         '                    </div>\n' +
@@ -709,7 +710,6 @@ formDesign.eventHandler = {
                         '                </button>\n' +
                         '            </div>\n' +
                         '        </div>');
-                    $(".date-picker").calendar();
                     break;
                 case 'city':
                     $('#container > .weui-cells').append('        <div id="elem_' + elementCount + '" class="weui-form-preview table-margin-top" data-type="place">\n' +
@@ -737,9 +737,6 @@ formDesign.eventHandler = {
                         '                </button>\n' +
                         '            </div>\n' +
                         '        </div>');
-                    $(".city-picker").cityPicker({
-                        title: ""
-                    });
                     break;
                 case 'number':
                     $('#container > .weui-cells').append('        <div id="elem_'+ elementCount +'"  class="weui-form-preview table-margin-top" data-type="single">\n' +
@@ -795,6 +792,11 @@ formDesign.eventHandler = {
                         '        </div>');
                     break;
             }
+            $(".date-picker").calendar();
+            $(".city-picker").cityPicker({
+                title: "请选择地址"
+            });
+
             elementCount ++;
 
             var temp = {

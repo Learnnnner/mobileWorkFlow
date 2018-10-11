@@ -152,6 +152,10 @@ form.service = {
 
                                     code += '</div></div>';
                                     $('#form').append(code);
+                                    $(".date-picker").calendar();
+                                    $("#city-picker").cityPicker({
+                                        title: "请选择地址"
+                                    });
                                 }
                             }
 
@@ -229,7 +233,7 @@ form.eventHandler = {
                         var url = MW.server + '/fillForm';
                         location.href = url;
                         $.toptip('数据提交成功！', 'success');
-                    } else $.alert("登录失败，请检查用户名或密码是否正确!")
+                    } else $.toptip("数据提交失败！")
                 }, error:
                     function (data) {
                         $.alert("操作失败!请检查网络情况或与系统管理员联系！")

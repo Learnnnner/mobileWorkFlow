@@ -66,20 +66,22 @@ reEdit.service = {
                                             code += '                <div class="weui-form-preview__item">\n' +
                                                 '                    <div class="weui-cells weui-cells_radio no-margin-top option-container">';
                                             for(var i = 0; i < jsonTemplate[ele].options.length; ++ i) {
-                                                if(jsonData.indexOf(jsonTemplate[ele].options[i] >= 0)) {
+                                                var opt = jsonTemplate[ele].options[i];
+                                                console.log(jsonData[ele].indexOf(opt));
+                                                if(jsonData[ele].indexOf(jsonTemplate[ele].options[i]) >= 0) {
                                                     code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
                                                         '                            <div class="weui-cell__bd">\n' +
-                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                                <p class="float-left option">'+ jsonTemplate[ele].options[i] +'</p>\n' +
                                                         '                            </div>\n' +
                                                         '                            <div class="weui-cell__ft">\n' +
-                                                        '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'"/>\n' +
+                                                        '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'" checked="checked"/>\n' +
                                                         '                                <span class="weui-icon-checked checked"></span>\n' +
                                                         '                            </div>\n' +
                                                         '                        </label>';
                                                 } else {
                                                     code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
                                                         '                            <div class="weui-cell__bd">\n' +
-                                                        '                                <p class="float-left option">'+ json[ele].options[i] +'</p>\n' +
+                                                        '                                <p class="float-left option">'+ jsonTemplate[ele].options[i] +'</p>\n' +
                                                         '                            </div>\n' +
                                                         '                            <div class="weui-cell__ft">\n' +
                                                         '                                <input type="radio" class="weui-check" name="radio1" id="o'+ optCount++ +'"/>\n' +
@@ -176,6 +178,10 @@ reEdit.service = {
 
                                     code += '</div></div>';
                                     $('#form').append(code);
+                                    $(".date-picker").calendar();
+                                    $(".city-picker").cityPicker({
+                                        title: "请选择地址"
+                                    });
                                 }
                             }
 
@@ -253,7 +259,7 @@ reEdit.eventHandler = {
                     if (200 == data.status) {
                         var url = MW.server + '/fillForm';
                         location.href = url;
-                    } else $.alert("登录失败，请检查用户名或密码是否正确!");
+                    } else $.alert("申请成功!");
                 }, error:
                     function (data) {
                         $.alert("操作失败!请检查网络情况或与系统管理员联系！");

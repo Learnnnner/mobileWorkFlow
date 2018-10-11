@@ -27,7 +27,7 @@ login.service = {
             success: function (data) {
                 if (200 == data.status) {
                     var url = MW.server + '/function';
-                    location.href = url;
+                    window.location.href = url;
                 } else $.alert("登录失败，请检查用户名或密码是否正确!")
             }, error:
                 function (data) {
