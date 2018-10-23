@@ -79,7 +79,6 @@ profile.eventHandler = {
         $('#submit').click(function () {
             var orgid = $('#orgs').val();
             url = MW.server + "/editOrgUser"
-
             var userdata = {
                 id : $('#id').val(),
                 realname : $('#realname').val(),

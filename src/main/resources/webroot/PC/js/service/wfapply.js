@@ -199,18 +199,15 @@ wfapply.eventHandler = {
                                     });
                                     $(".city-picker").citypicker();
                                 }
-
                             }else {
-                                $.toptip("数据异常", 'error')
+                                layer.msg('数据异常!', {icon: 2});
                             }
-
-                        } else $.toptip("数据获取失败", 'error');
+                        } else layer.msg('数据获取失败！', {icon: 2});
                     }, error: function (data) {
-                        $.toptip("数据获取失败", 'error');
+                        layer.msg('数据获取失败', {icon: 2});
                     }
                 })
-            }else $.toptip('访问出错', 'error');
-
+            }else layer.msg('访问出错!', {icon: 2});
         })
     }, handleSubmit:function () {
         $(document).on('click', '#submit', function () {
