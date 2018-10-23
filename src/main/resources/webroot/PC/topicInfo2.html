@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="js/plugins/layui/css/layui.css"  media="all">
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+</head>
+<body>
+<div id="info">
+    <div style="margin: 1vw 2vw 0 0">
+        <label class="layui-form-label">标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+        </div>
+    </div>
+    <div id="add" style="margin: 2vw 0">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </div>
+    <div id="select">
+        <div style="margin: 1vw 2vw 0 0">
+            <label class="layui-form-label">选项</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#add').click(function () {
+            $('#select').append('<div style="margin: 1vw 2vw 0 0">\n' +
+                '            <label class="layui-form-label">选项</label>\n' +
+                '            <div class="layui-input-block">\n' +
+                '                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">\n' +
+                '            </div>\n' +
+                '        </div>');
+        })
+    </script>
+</div>
+</body>
+</html>

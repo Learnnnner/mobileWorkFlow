@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>移动工作流管理端-流程创建</title>
     <link href="css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
     <link href="css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="js/plugins/layui/css/layui.css" rel="stylesheet">
     <link href="css/animate.min.css" rel="stylesheet">
-    <link href="css/style.min.css?v=4.0.0" rel="stylesheet"><base target="_blank">
+    <link href="css/style.min.css?v=4.0.0" rel="stylesheet">
+    <link href="css/wfcreate.css" rel="stylesheet">
+    <link href="js/plugins/ztree/css/metroStyle/metroStyle.css" rel="stylesheet">
+    <base target="_blank">
 </head>
 
 <body class="gray-bg">
@@ -19,29 +22,176 @@
                 <div class="ibox-content">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active">
-                            <a href="#flow" aria-controls="flow" role="tab" data-toggle="tab">流程</a>
+                            <a href="#m1" aria-controls="flow" role="tab" data-toggle="tab">表单</a>
                         </li>
                         <li role="presentation">
-                            <a href="#staff" aria-controls="staff" role="tab" data-toggle="tab">待办</a>
+                            <a href="#m2" aria-controls="staff" role="tab" data-toggle="tab">流程</a>
                         </li>
                         <li role="presentation">
-                            <a href="#table" aria-controls="table" role="tab" data-toggle="tab">表单</a>
+                            <a href="#m3" aria-controls="table" role="tab" data-toggle="tab">人员</a>
                         </li>
                     </ul>
-
                     <div class="tab-content">
-                        <div role="flow" class="tab-pane active" id="flow">流程</div>
-                        <div role="staff" class="tab-pane" id="staff">待办</div>
-                        <div role="table" class="tab-pane" id="table">表单</div>
+                        <div role="m1" class="tab-pane active" id="m1">
+                            <div>
+                                <div style="margin: 1vw">
+                                    <button type="button" class="btn btn-w-m btn-primary submit">确定</button>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">标题</label>
+                                    <div class="layui-input-block">
+                                        <input id="title" type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">描述</label>
+                                    <div class="layui-input-block">
+                                        <textarea id="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                    </div>
+                                </div>
+                                <hr class="layui-bg-green">
+                                <div id="table" class="layui-form" >
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">单行输入框</div>
+                                        <div class="layui-col-md9">
+                                            <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">验证日期</div>
+                                        <div class="layui-col-md9">
+                                            <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">省/市/县</div>
+                                        <div class="layui-col-md9">
+                                            <input type="text" name="city" id="city" lay-verify="date" placeholder="请输入地址" autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">多项选择</div>
+                                        <div class="layui-col-md9">
+                                            <input type="checkbox" title="选项1"><br>
+                                            <input type="checkbox" title="选项2"><br>
+                                            <input type="checkbox" title="选项3"><br>
+                                            <input type="checkbox" title="选项4"><br>
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">单项选择</div>
+                                        <div class="layui-col-md9">
+                                            <input type="radio" name="sex" value="男" title="男"><br>
+                                            <input type="radio" name="sex" value="女" title="女"><br>
+                                            <input type="radio" name="sex" value="女" title="女"><br>
+                                            <input type="radio" name="sex" value="女" title="女"><br>
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                    <div style="border: dotted #c1c1c1; padding: 5px;" class="layui-form-item layui-form-text">
+                                        <div style="margin: 9px 0 8px 18px;" class="layui-col-md1">普通文本</div>
+                                        <div class="layui-col-md9">
+                                            <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+                                        </div>
+                                        <div class="layui-col-md1">
+                                            <div style="margin-left: 4vw" class="layui-btn layui-btn-danger delete">删除</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="layui-bg-green">
+                                <div>
+                                    <button id="addmodule" style="margin:0 1vw 1vw 1vw" class="layui-btn layui-btn-radius">添加模块</button>
+                                    <div id="modules" style="border: dotted #c1c1c1; width: 100%; display: none">
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="single">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">单行文字</span>
+                                        </button>
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="muti">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">多行文字</span>
+                                        </button>
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="single">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">省市区</span>
+                                        </button>
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="checkbox">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">多项选择</span>
+                                        </button>
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="radio">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">单项选择</span>
+                                        </button>
+                                        <button style="margin: 1vw" class="btn btn-default module" type="button" data-type="number">
+                                            <i class="fa fa-warning"></i>
+                                            <span class="bold">数字</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="m2" class="tab-pane" id="m2">
+                            <div style="margin: 1vw">
+                                <button type="button" class="btn btn-w-m btn-primary submit">确定</button>
+                            </div>
+                            <div id="workflow">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-2" style="min-height: 700px;background-color: #333;border-radius:5px;padding-top: 12px;width: auto;">
+                                            <div class="content_wrap" style="width: 100%;">
+                                                <div class="left" style="width: 100%;">
+                                                    <ul id="leftMenu" style="overflow: auto;margin: 0px;padding:0px;">
+                                                        <li id="module">节点</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-10">
+                                            <div id="container"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="m3" class="tab-pane" id="m3">
+                            <div>
+                                <div style="margin: 1vw">
+                                    <button type="button" class="btn btn-w-m btn-primary submit">确定</button>
+                                </div>
+                                <div id="staff" style="margin-left: auto;margin-right: auto;">
+                                    <ul id="staffTree" class="ztree" style="overflow-y: auto"></ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script src="js/jquery.min.js?v=2.1.4"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script src="js/bootstrap.min.js?v=3.3.5"></script>
 <script src="js/content.min.js?v=1.0.0"></script>
+<script src="js/plugins/layui/layui.all.js"></script>
+<script src="js/plugins/ztree/js/jquery.ztree.core.min.js"></script>
+<script src="js/plugins/ztree/js/jquery.ztree.excheck.min.js"></script>
+<script type="text/javascript" src="js/jsPlumb-2.2.8.js"></script>
+<script src="js/config.js"></script>
+<script src="js/service/wfcreate.js"></script>
 </body>
 </html>
