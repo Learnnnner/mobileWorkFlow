@@ -398,7 +398,7 @@ formDesign.service = {
 
         formData.wfSet = wfData;
         formData.nodeCount = nodeCount;
-        var userSet = staffSelect.service.getUser()
+        var userSet = staffSelect.service.getUser();
         formData.userSet = userSet ? userSet : [];
 
 

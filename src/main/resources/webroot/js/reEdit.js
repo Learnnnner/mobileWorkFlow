@@ -66,8 +66,6 @@ reEdit.service = {
                                             code += '                <div class="weui-form-preview__item">\n' +
                                                 '                    <div class="weui-cells weui-cells_radio no-margin-top option-container">';
                                             for(var i = 0; i < jsonTemplate[ele].options.length; ++ i) {
-                                                var opt = jsonTemplate[ele].options[i];
-                                                console.log(jsonData[ele].indexOf(opt));
                                                 if(jsonData[ele].indexOf(jsonTemplate[ele].options[i]) >= 0) {
                                                     code += '                        <label class="weui-cell weui-check__label" for="o'+ optCount +'">\n' +
                                                         '                            <div class="weui-cell__bd">\n' +
@@ -89,7 +87,6 @@ reEdit.service = {
                                                         '                            </div>\n' +
                                                         '                        </label>';
                                                 }
-
                                             }
                                             code +='</div></div>';
                                             break;
