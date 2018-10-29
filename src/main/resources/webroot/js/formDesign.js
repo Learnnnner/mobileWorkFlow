@@ -362,7 +362,6 @@ formDesign.service = {
                 optionCount ++;
             }
         }
-
         if(type == 'checkbox') {
             for(var i = 0; i < options.length; ++ i) {
                 selector.find('.option-container').append(
@@ -378,7 +377,6 @@ formDesign.service = {
                     optionCount ++;
             }
         }
-
         return options;
     }, getQueryVariable: function (variable) {
         var query = window.location.search.substring(1);
