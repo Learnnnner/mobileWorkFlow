@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="js/plugins/layui/css/layui.css"  media="all">
     <script src="js/plugins/layui/layui.js" charset="UTF-8"></script>
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/config.js"></script>
 </head>
 <body style="width: 90%;margin-left: 5%">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
@@ -24,25 +26,50 @@
         <div class="layui-inline">
             <label class="layui-form-label">审批人</label>
             <div class="layui-input-inline">
-                <select id="dealer" name="quiz">
-                    <option value="">请选择问题</option>
-                    <optgroup label="城市记忆">
-                        <option value="你工作的第一个城市">你工作的第一个城市</option>
-                    </optgroup>
-                    <optgroup label="学生时代">
-                        <option value="你的工号">你的工号</option>
-                        <option value="你最喜欢的老师">你最喜欢的老师</option>
-                    </optgroup>
-                </select>
+                <select id="dealer" name="quiz"></select>
             </div>
         </div>
     </div>
 </form>
 </body>
 <script>
-    layui.use('form', function(){
-        var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
-        form.render();
+    var staffData = {};
+    $.ajax({
+        type: "POST",
+        url: MW.server + "/fetchOrgUser",
+        dataType: "json",
+        success: function (data) {
+            if (200 == data.status) {
+                var $data = data.data;
+
+                for(var i = 0; i < $data.length; ++ i) {
+                    if(staffData[$data[i][1]] == undefined) {
+                        staffData[$data[i][1]] = {};
+                        staffData[$data[i][1]].id = $data[i][0];
+                        staffData[$data[i][1]].value = [];
+                        staffData[$data[i][1]].value.push($data[i]);
+                    }else {
+                        staffData[$data[i][1]].value.push($data[i]);
+                    }
+                }
+
+                var str = ''
+                for(var i in staffData) {
+                   str += '<optgroup label="'+ i +'">\n';
+                    for(var j in staffData[i].value) {
+                        str += '<option value="' + staffData[i].value[j][2] + '">'+ staffData[i].value[j][5] +'</option>\n';
+                    }
+                   str +='</optgroup>';
+                }
+                $('#dealer').append(str);
+                layui.use('form', function(){
+                    var form = layui.form; //只有执行了这一步，部分表单元素才会自动修饰成功
+                    form.render();
+                });
+            } else layer.msg('操作失败!请检查网络情况或与系统管理员联系！！', {icon: 2});
+        }, error: function (data) {
+            layer.msg('操作失败!请检查网络情况或与系统管理员联系！！', {icon: 2});
+        }
     });
 </script>
 </html>

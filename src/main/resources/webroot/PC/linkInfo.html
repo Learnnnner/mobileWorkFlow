@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="js/plugins/layui/css/layui.css"  media="all">
     <script src="js/jquery.min.js" charset="UTF-8"></script>
     <script src="js/plugins/layui/layui.js" charset="UTF-8"></script>
+    <script src="js/service/linkInfo.js" charset="UTF-8"></script>
 </head>
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>链接条件设置</legend>
     <div style="margin: 20px 30px 10px">
-        <button id="add" class="layui-btn">添加跳转条件</button>
+        <button id="addItem" class="layui-btn">添加跳转条件</button>
     </div>
 </fieldset>
 <div class="layui-form">
@@ -34,64 +35,98 @@
 </div>
 </body>
 <script>
-    var count = 0;
-    layui.config({
-        base: 'js/',
-    })
-    layui.use(['interact'],function(){
-        var interact = layui.interact;
-        var data=[
-            {"id":1,"pid":0,"title":"默认"},
-            {"id":2,"pid":0,"title":"姓名"},
-            {"id":3,"pid":0,"title":"年龄"},
-            {"id":4,"pid":1,"title":"默认"},
-            {"id":6,"pid":2,"title":"包含"},
-            {"id":7,"pid":2,"title":"不包含"},
-            {"id":8,"pid":3,"title":"大于"},
-            {"id":9,"pid":3,"title":"小于"},
-            {"id":9,"pid":3,"title":"等于"}];
-        interact.render({
-            elem : '.condition0',
-            title : '设置条件',
-            data : data,
-            name : 'region1',
-            hint : ['请选择判断域','请选择判断条件'],
-        });
-    })
-    $('#add').click(function () {
-        var condition = 'condition' + ++count;
-        $('#conditions').append('<div class="term" style="clear: both">\n' +
-            '            <div class="layui-form-inline" style="float: left">\n' +
-            '                <div class="layui-form-item ' + condition + '"></div>\n' +
-            '            </div>\n' +
-            '            <div class="layui-input-inline" style="float: left">\n' +
-            '                <input type="text"  class="layui-input" placeholder="请输入值">\n' +
-            '            </div>\n' +
-            '            <div class="layui-input-inline" >\n' +
-            '                <i class="layui-icon layui-icon-close-fill remove" style="margin-left: 10px;font-size: 40px;color: #d9534f"></i>\n' +
-            '            </div>\n' +
-            '        </div>');
-
-        layui.use(['interact'], function() {
-            var interact = layui.interact;
-            var data=[
-                {"id":1,"pid":0,"title":"默认"},
-                {"id":2,"pid":0,"title":"姓名"},
-                {"id":3,"pid":0,"title":"年龄"},
-                {"id":4,"pid":1,"title":"默认"},
-                {"id":6,"pid":2,"title":"包含"},
-                {"id":7,"pid":2,"title":"不包含"},
-                {"id":8,"pid":3,"title":"大于"},
-                {"id":9,"pid":3,"title":"小于"},
-                {"id":9,"pid":3,"title":"等于"}];
-            interact.render({
-                elem : '.' + condition,
-                title : '设置条件',
-                data : data,
-                name : 'region1',
-                hint : ['请选择省份','请选择城市'],
-            });
-        })
-    })
+//    var count = 0;
+//    layui.config({
+//        base: 'js/',
+//    })
+//    layui.use(['interact'],function(){
+//        var interact = layui.interact;
+//
+//        var len = formData.body.length;
+//        var data = [];
+//        var counter = len;
+//        for(var i = 0; i < len; ++ i) {
+//            var condition = {
+//                "id" : i,
+//                "pid" : 0,
+//                "title" : formData.body[i]
+//            };
+//            data.push(condition);
+//            switch (formData.body[i].type) {
+//                case 'single':
+//                    data.push({"id":counter++, "pid": i, "title": "包含"});
+//                    data.push({"id":counter++, "pid": i, "title": "不包含"});
+//                    break;
+//                case 'muti':
+//                    data.push({"id":counter++, "pid": i, "title": "包含"});
+//                    data.push({"id":counter++, "pid": i, "title": "不包含"});
+//                    break;
+//                case 'city':
+//                    data.push({"id":counter++, "pid": i, "title": "包含"});
+//                    data.push({"id":counter++, "pid": i, "title": "不包含"});
+//                    break;
+//                case 'number':
+//                    data.push({"id":counter++, "pid": i, "title": "大于"});
+//                    data.push({"id":counter++, "pid": i, "title": "等于"});
+//                    data.push({"id":counter++, "pid": i, "title": "小于"});
+//                    break;
+//                case 'checkbox': break;
+//                case 'radio': break;
+//            }
+//        }
+//
+////        var data = [
+////            {"id":1,"pid":0,"title":"默认"},
+////            {"id":2,"pid":0,"title":"姓名"},
+////            {"id":3,"pid":0,"title":"年龄"},
+////            {"id":4,"pid":1,"title":"默认"},
+////            {"id":6,"pid":2,"title":"包含"},
+////            {"id":7,"pid":2,"title":"不包含"},
+////            {"id":8,"pid":3,"title":"大于"},
+////            {"id":9,"pid":3,"title":"小于"},
+////            {"id":9,"pid":3,"title":"等于"}];
+//        interact.render({
+//            elem : '.condition0',
+//            title : '设置条件',
+//            data : data,
+//            name : 'region1',
+//            hint : ['请选择判断域','请选择判断条件'],
+//        });
+//    })
+//    $('#add').click(function () {
+//        var condition = 'condition' + ++count;
+//        $('#conditions').append('<div class="term" style="clear: both">\n' +
+//            '            <div class="layui-form-inline" style="float: left">\n' +
+//            '                <div class="layui-form-item ' + condition + '"></div>\n' +
+//            '            </div>\n' +
+//            '            <div class="layui-input-inline" style="float: left">\n' +
+//            '                <input type="text"  class="layui-input" placeholder="请输入值">\n' +
+//            '            </div>\n' +
+//            '            <div class="layui-input-inline" >\n' +
+//            '                <i class="layui-icon layui-icon-close-fill remove" style="margin-left: 10px;font-size: 40px;color: #d9534f"></i>\n' +
+//            '            </div>\n' +
+//            '        </div>');
+//
+//        layui.use(['interact'], function() {
+//            var interact = layui.interact;
+//            var data=[
+//                {"id":1,"pid":0,"title":"默认"},
+//                {"id":2,"pid":0,"title":"姓名"},
+//                {"id":3,"pid":0,"title":"年龄"},
+//                {"id":4,"pid":1,"title":"默认"},
+//                {"id":6,"pid":2,"title":"包含"},
+//                {"id":7,"pid":2,"title":"不包含"},
+//                {"id":8,"pid":3,"title":"大于"},
+//                {"id":9,"pid":3,"title":"小于"},
+//                {"id":9,"pid":3,"title":"等于"}];
+//            interact.render({
+//                elem : '.' + condition,
+//                title : '设置条件',
+//                data : data,
+//                name : 'region1',
+//                hint : ['请选择省份','请选择城市'],
+//            });
+//        })
+//    })
 </script>
 </html>
