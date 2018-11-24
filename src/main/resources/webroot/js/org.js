@@ -150,7 +150,7 @@ Org.eventHandler = {
         $('#save').click(function () {
             var id = $('#id').val();
             var name = $('#name').val();
-            var desciption = $('#desciption').val();
+            var desciption = $('#description').val();
             if(id == '' || id == undefined || id == null || name == '' || name == undefined || name == null) {
                 $.toptip('操作失败,请输入部门编号和名称', 'error');
             }else {
