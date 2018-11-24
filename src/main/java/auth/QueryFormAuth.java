@@ -43,21 +43,25 @@ public class QueryFormAuth {
                     connfuture.result().queryWithParams(urlSql, urlParams, res1 -> {
                         if (res1.succeeded()) {
                             ResultSet rs1 = res1.result();
-                            List urlList = rs1.getResults();
+                            List<JsonArray> urlList = rs1.getResults();
                             if(urlList.size() == 1) {
+                                String url = urlList.get(0).getString(0);
                                 JsonObject data = new JsonObject();
                                 data.put("status", 200);
-                                data.put("url", urlList);
+                                data.put("url", url);
                                 routingContext.response().setStatusCode(200).end(Json.encodePrettily(data));
                             }else {
                                 JsonObject data = new JsonObject();
-                                data.put("status", 500);
-                                routingContext.response().setStatusCode(500).end(Json.encodePrettily(data));
+                                data.put("status", 200);
+                                data.put("url", "");
+                                routingContext.response().setStatusCode(200).end(Json.encodePrettily(data));
                             }
+                            connfuture.result().close();
                         }else {
                             JsonObject data = new JsonObject();
                             data.put("status", 500);
                             routingContext.response().setStatusCode(500).end(Json.encodePrettily(data));
+                            connfuture.result().close();
                         }
                     });
                 }
@@ -71,6 +75,5 @@ public class QueryFormAuth {
                 }
             });
         }
-
     }
 }
